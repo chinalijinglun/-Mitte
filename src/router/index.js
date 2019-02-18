@@ -3,19 +3,40 @@ import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
 import main from '@/pages/main.vue'
 
-Vue.use(Router)
+Vue.use(Router);
 
 export default new Router({
   routes: [
     {
       path: '/',
-      name: '/',
       component: main,
       children:  [{
-        path: '/',
-        name: 'test',
-        component: HelloWorld
+        path: 'order',
+        name: '订单管理',
+        component: () => import('@/pages/order/index')
       }]
+    },
+    {
+      path:'/',
+      component: main,
+      children: [
+        {
+          path:'category',
+          name:'品类管理',
+          component: () => import('@/pages/category/index')
+        }
+      ]
+    },
+    {
+      path:'/',
+      component: main,
+      children: [
+        {
+          path:'brand',
+          name:'品牌管理',
+          component: () => import('@/pages/brand/index')
+        }
+      ]
     }
   ]
 })

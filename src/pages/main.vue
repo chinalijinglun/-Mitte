@@ -19,7 +19,7 @@
 </script>
 <style scoped>
   .el-main {
-    background-color: #eff2f7;
-    padding: 0px;
+    background-color: #f2f2f2;
+    padding: 40px;
   }
 </style>
