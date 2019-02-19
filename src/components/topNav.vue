@@ -1,7 +1,7 @@
 <template>
   <div class="topNav">
     <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item v-for="item of navList">
+      <el-breadcrumb-item v-for="(item,index) of navList" :key="index">
         {{item.name}}
       </el-breadcrumb-item>
     </el-breadcrumb>

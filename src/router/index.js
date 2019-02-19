@@ -13,7 +13,25 @@ export default new Router({
       children:  [{
         path: 'order',
         name: '订单管理',
-        component: () => import('@/pages/order/index')
+        redirect:'/order/ship',
+        component: () => import('@/pages/order/index'),
+        children: [
+          {
+            name:'待发货',
+            path:'ship',
+            component: () => import('@/components/OrderTable.vue')
+          },
+          {
+            name:'已发货',
+            path:'shipped',
+            component: () => import('@/components/OrderTable.vue')
+          },
+          {
+            name:'已完成',
+            path:'complete',
+            component: () => import('@/components/OrderTable.vue')
+          }
+        ]
       }]
     },
     {
@@ -35,6 +53,39 @@ export default new Router({
           path:'brand',
           name:'品牌管理',
           component: () => import('@/pages/brand/index')
+        }
+      ]
+    },
+    {
+      path:'/',
+      component: main,
+      children: [
+        {
+          path:'shops',
+          name:'商品管理',
+          component: () => import('@/pages/shops/index')
+        }
+      ]
+    },
+    {
+      path:'/',
+      component: main,
+      children: [
+        {
+          path:'push',
+          name:'推送管理',
+          component: () => import('@/pages/push/index')
+        }
+      ]
+    },
+    {
+      path:'/',
+      component: main,
+      children: [
+        {
+          path:'sale',
+          name:'售后管理',
+          component: () => import('@/pages/sale/index')
         }
       ]
     }
