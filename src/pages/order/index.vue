@@ -153,6 +153,7 @@
             overflow-x: hidden;
             overflow-y: scroll;
             padding: 20px;
+            box-sizing: border-box;
           }
         }
       }
