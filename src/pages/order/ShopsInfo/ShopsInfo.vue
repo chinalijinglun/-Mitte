@@ -29,13 +29,14 @@
 <style scoped lang="less">
   .shopsInfo {
     height: 130px;
+    color:#606266;
     .top {
       height: 100px;
       display: flex;
       .pic {
         width: 100px;
         height: 100%;
-        background-color: #888;
+        background-color: #d8d8d8;
       }
       .information {
         height: 100%;
@@ -51,7 +52,7 @@
           justify-content: space-between;
           span {
             display: inline-block;
-            background-color: #888;
+            background-color: #d8d8d8;
             padding: 0 10px;
             border-radius: 10px;
           }
@@ -67,7 +68,7 @@
       padding: 0 10px;
       &>div {
         background-color: #fff;
-        border:1px solid #888;
+        border:1px solid #d8d8d8;
         border-radius: 10px;
         width: 60px;
         text-align: center;

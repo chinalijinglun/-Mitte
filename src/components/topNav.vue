@@ -6,6 +6,8 @@
       </el-breadcrumb-item>
     </el-breadcrumb>
     <div class="iconContainer">
+      <i v-if="navList[0].name === '品类管理'" class="el-icon-edit-outline"></i>
+      <i v-if="navList[0].name === '品类管理'" class="el-icon-circle-plus-outline"></i>
       <i class="el-icon-search"></i>
       <i class="el-icon-bell"></i>
       <i class="el-icon-news"></i>
