@@ -6,11 +6,29 @@
       </el-breadcrumb-item>
     </el-breadcrumb>
     <div class="iconContainer">
-      <i v-if="navList[0].name === '品类管理'" class="el-icon-edit-outline"></i>
-      <i v-if="navList[0].name === '品类管理'" class="el-icon-circle-plus-outline"></i>
-      <i class="el-icon-search"></i>
-      <i class="el-icon-bell"></i>
-      <i class="el-icon-news"></i>
+      <div class="editIcon">
+        <i v-if="navList[0].name === '品类管理'" class="el-icon-edit-outline"></i>
+        <ul class="editMenu">
+          <li>修改一级品类</li>
+          <li>修改二级品类</li>
+        </ul>
+      </div>
+      <div class="addIcon">
+        <i v-if="navList[0].name === '品类管理'" class="el-icon-circle-plus-outline"></i>
+        <ul class="addMenu">
+          <li>添加一级品类</li>
+          <li>添加二级品类</li>
+        </ul>
+      </div>
+      <div class="searchIcon">
+        <i class="el-icon-search"></i>
+      </div>
+      <div class="noticeIcon">
+        <i class="el-icon-bell"></i>
+      </div>
+      <div class="personIcon">
+        <i class="el-icon-news"></i>
+      </div>
     </div>
   </div>
 </template>
@@ -49,8 +67,58 @@
       font-size: 20px;
       color:#888;
       margin-right: 50px;
-      i {
-        margin-right: 20px;
+      display: flex;
+      &>div {
+        width: 50px;
+        text-align: center;
+        display: flex;
+        height: 30px;
+      }
+      &>div.searchIcon {
+        width: 100px;
+      }
+      .addIcon,.editIcon {
+        flex-direction: column;
+        align-items: center;
+        .addMenu,.editMenu {
+          width: 120px;
+          font-size: 13px;
+          font-weight: 300;
+          line-height: 20px;
+          margin-top: 10px;
+          background-color: #fff;
+          border-radius: 7px;
+          display: none;
+          opacity: 0;
+          position: relative;
+          z-index: 99;
+          padding: 10px 0;
+          li:hover {
+            background-color: #e6e6e6;
+            cursor: default;
+          }
+          &:hover {
+            display: block;
+            opacity: 1;
+          }
+        }
+        &:hover .addMenu {
+          display: block;
+          opacity: 1;
+        }
+        &:hover .editMenu {
+          display: block;
+          opacity: 1;
+        }
+      }
+      .searchIcon {
+        justify-content: center;
+      }
+      .noticeIcon {
+        justify-content: center;
+      }
+      .personIcon {
+        justify-content: center;
       }
     }
   }
