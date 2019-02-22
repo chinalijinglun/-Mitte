@@ -75,7 +75,33 @@
         <h2>添加二级品类</h2>
       </div>
       <div class="dialog-content">
-
+        <div class="formWrap">
+          <div>
+            <p>一级品类名称</p>
+            <el-select v-model="selectValue" placeholder="请选择" value="">
+              <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </div>
+          <div>
+            <p>二级品类名称</p>
+            <el-input v-model="input1" placeholder="请输入内容" />
+          </div>
+          <div>
+            <p>权重</p>
+            <el-input v-model="input2" placeholder="请输入内容" />
+          </div>
+        </div>
+        <div class="shopsProperty">
+          <p>添加商品属性</p>
+          <div>
+            <span v-for="(item,index) of shopsProperty" :key="index">{{item}}</span>
+          </div>
+        </div>
       </div>
       <div slot="footer" class="dialog-footer">
         <div class="footerLeft">
@@ -100,7 +126,31 @@
     data() {
       return {
         isFirstVisible: false,
-        isSecondVisible: false
+        isSecondVisible: false,
+        options: [
+          {
+            value: '选项1',
+            label: '艺术品'
+          },
+          {
+            value: '选项2',
+            label: '家居装饰'
+          },
+          {
+            value: '选项3',
+            label: '珠宝首饰'
+          }, {
+            value: '选项4',
+            label: '洗漱用品'
+          }, {
+            value: '选项5',
+            label: '黄金白银'
+          }
+        ],
+        selectValue: '',
+        input1:'',
+        input2:'',
+        shopsProperty:['材质','出版次数','尺寸','年份','签名位置','发货时间','发货地','售后','价格','名字','品级',]
       }
     },
     components: {
@@ -121,26 +171,20 @@
 <style scoped lang="less">
   .categoryContainer {
     height: calc(100% - 50px);
-
     /deep/ .el-row {
       height: 100%;
-
       .el-col {
         height: 100%;
       }
     }
-
     .left {
       height: 100%;
-
       .first {
         height: calc(100% - 80px);
         background-color: #fff;
         border-radius: 7px;
-
         .scrollbarContainer {
           height: 500px;
-
           /deep/ .el-scrollbar__wrap {
             overflow-x: hidden;
             overflow-y: scroll;
@@ -150,17 +194,14 @@
         }
       }
     }
-
     .right {
       height: 100%;
-
       .second {
         height: calc(100% - 80px);
         background-color: #fff;
         border-radius: 7px;
       }
     }
-
     .right, .left {
       .title {
         height: 80px;
@@ -169,21 +210,17 @@
         font-size: 24px;
       }
     }
-
     .firstDialog {
       /deep/ .el-dialog {
         border-radius: 10px;
-
         .dialog-footer {
           display: flex;
           justify-content: space-between;
-
           .footerLeft {
-            span {
+            span:last-child {
               margin-left: 20px;
             }
           }
-
           .footerRight {
             button {
               margin-right: 20px;
@@ -194,17 +231,14 @@
               text-align: center;
               font-size: 15px;
               outline: none;
-
               &:hover {
                 cursor: pointer;
               }
             }
-
             button:first-child {
               background-color: #898989;
               color: #fff;
             }
-
             button:last-child {
               background-color: #ececec;
               color: #aeaeae;
@@ -212,21 +246,18 @@
             }
           }
         }
-
         .dialog-content {
           display: flex;
           align-items: flex-end;
 
           .left {
             width: 40%;
-
             .addPic {
               height: 100px;
               background-color: #e6e6e6;
               display: flex;
               justify-content: center;
               align-items: center;
-
               i {
                 color: #fff;
                 font-size: 50px;
@@ -234,7 +265,6 @@
               }
             }
           }
-
           .right {
             flex-grow: 1;
             color: #c3c3c3;
@@ -249,17 +279,15 @@
     .secondDialog {
       /deep/ .el-dialog {
         border-radius: 10px;
-
         .dialog-footer {
           display: flex;
           justify-content: space-between;
 
           .footerLeft {
-            span {
+            span:last-child {
               margin-left: 20px;
             }
           }
-
           .footerRight {
             button {
               margin-right: 20px;
@@ -270,21 +298,43 @@
               text-align: center;
               font-size: 15px;
               outline: none;
-
               &:hover {
                 cursor: pointer;
               }
             }
-
             button:first-child {
               background-color: #898989;
               color: #fff;
             }
-
             button:last-child {
               background-color: #ececec;
               color: #aeaeae;
               border: none;
+            }
+          }
+        }
+        .dialog-content {
+          .formWrap {
+            display: flex;
+            justify-content: space-between;
+            &>div>p {
+              margin-bottom: 10px;
+            }
+          }
+          .shopsProperty {
+            margin-top: 17px;
+            &>div {
+              span {
+                display: inline-block;
+                border-radius: 12px;
+                border: 1px solid #d8d8d8;
+                padding: 0 10px;
+                margin-top: 10px;
+                margin-right: 10px;
+              }
+              span:nth-child(odd) {
+                background-color: #d8d8d8;
+              }
             }
           }
         }
