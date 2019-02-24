@@ -75,6 +75,16 @@ export default new Router({
           path:'push',
           name:'推送管理',
           component: () => import('@/pages/push/index')
+        },
+        {
+          path:'shop_list',
+          name:'推送管理列表',
+          component: () => import('@/pages/push/push_list')
+        },
+        {
+          path:'topic_list',
+          name:'推送管理列表',
+          component: () => import('@/pages/push/push_list1')
         }
       ]
     },

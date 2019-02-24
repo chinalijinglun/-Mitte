@@ -11,4 +11,7 @@
   li {
     list-style: none;
   }
+  a{
+    color: inherit;
+  }
 </style>
