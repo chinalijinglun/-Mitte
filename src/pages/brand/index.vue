@@ -3,7 +3,7 @@
     <el-row :gutter="40">
       <el-col :span="16">
         <div class="left">
-          <p class="title" @click="showModal()">品牌图片</p>
+          <p class="title">品牌图片</p>
           <div class="content">
             <div class="scrollContainer">
               <el-scrollbar style="height: 100%">
@@ -48,12 +48,12 @@
       </el-col>
     </el-row>
     <el-dialog
-      :visible.sync="isVisible"
+      :visible.sync="app.isBrandModalVisible"
       class="brandDialog"
       width="50%"
     >
       <div slot="title" class="dialog-header">
-        <h2>添加品牌</h2>
+        <h2>{{app.modalTitle}}</h2>
       </div>
       <div class="dialog-content">
         <div class="left">
@@ -81,8 +81,8 @@
           <span>显示按钮</span>
         </div>
         <div class="footerRight">
-          <button @click="isFirstVisible = false">提交</button>
-          <button @click="isFirstVisible = false">取消</button>
+          <button @click="cancelModal()">提交</button>
+          <button @click="cancelModal()">取消</button>
         </div>
       </div>
     </el-dialog>
@@ -90,26 +90,27 @@
 </template>
 
 <script>
+  import { mapState } from 'vuex';
   export default {
     name: "index",
     data() {
       return {
         isShow:false,
-        isVisible:false
       }
     },
     computed:{
       picData(){
         let testData = [];
-        for(let i = 0;i<200;i++){
+        for(let i = 0;i<196;i++){
           testData.push(i)
         }
         return testData
-      }
+      },
+      ...mapState(['app'])
     },
     methods: {
-      showModal() {
-        this.isVisible = true
+      cancelModal() {
+        this.$store.dispatch('dismissModal','brand')
       }
     }
   }

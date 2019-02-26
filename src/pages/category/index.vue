@@ -3,16 +3,11 @@
     <el-row :gutter="40">
       <el-col :span="11">
         <div class="left">
-          <p class="title">一级品类</p>
-          <div class="first" @click="test()">
+          <p class="title" @click="enhui()">一级品类</p>
+          <div class="first">
             <div class="scrollbarContainer">
               <el-scrollbar style="height: 100%">
-                <LeftItem/>
-                <LeftItem/>
-                <LeftItem/>
-                <LeftItem/>
-                <LeftItem/>
-                <LeftItem/>
+                <LeftItem v-for="(item,index) of [1,2,3,4,5,6,7]" ref="parent" :key="index"/>
               </el-scrollbar>
             </div>
           </div>
@@ -28,12 +23,12 @@
       </el-col>
     </el-row>
     <el-dialog
-      :visible.sync="isFirstVisible"
+      :visible.sync="app.isFirstVisible"
       class="firstDialog"
       width="50%"
     >
       <div slot="title" class="dialog-header">
-        <h2>添加一级品类</h2>
+        <h2>{{app.modalTitle}}</h2>
       </div>
       <div class="dialog-content">
         <div class="left">
@@ -61,18 +56,18 @@
           <span>显示按钮</span>
         </div>
         <div class="footerRight">
-          <button @click="isFirstVisible = false">提交</button>
-          <button @click="isFirstVisible = false">取消</button>
+          <button @click="cancelModal('first')">提交</button>
+          <button @click="cancelModal('first')">取消</button>
         </div>
       </div>
     </el-dialog>
     <el-dialog
-      :visible.sync="isSecondVisible"
+      :visible.sync="app.isSecondVisible"
       class="secondDialog"
       width="50%"
     >
       <div slot="title" class="dialog-header">
-        <h2>添加二级品类</h2>
+        <h2>{{app.modalTitle}}</h2>
       </div>
       <div class="dialog-content">
         <div class="formWrap">
@@ -109,8 +104,8 @@
           <span>显示按钮</span>
         </div>
         <div class="footerRight">
-          <button @click="isSecondVisible = false">提交</button>
-          <button @click="isSecondVisible = false">取消</button>
+          <button @click="cancelModal('second')">提交</button>
+          <button @click="cancelModal('second')">取消</button>
         </div>
       </div>
     </el-dialog>
@@ -118,6 +113,7 @@
 </template>
 
 <script>
+  import { mapState } from 'vuex';
   import LeftItem from './LeftItem/LeftItem';
   import RightItem from './RightItem/RightItem'
 
@@ -125,8 +121,6 @@
     name: "index",
     data() {
       return {
-        isFirstVisible: false,
-        isSecondVisible: false,
         options: [
           {
             value: '选项1',
@@ -153,16 +147,22 @@
         shopsProperty:['材质','出版次数','尺寸','年份','签名位置','发货时间','发货地','售后','价格','名字','品级',]
       }
     },
+    computed:{
+      ...mapState(['app'])
+    },
     components: {
       LeftItem,
       RightItem
     },
+    mounted(){
+    },
     methods: {
-      test() {
-        this.isFirstVisible = true
+      cancelModal(type) {
+        this.$store.dispatch('dismissModal',type)
       },
-      test2() {
-        this.isSecondVisible = true
+      enhui() {
+        console.log(this.$refs.parent,'pppp')
+        this.$refs.parent.chang()
       }
     }
   }
@@ -188,7 +188,7 @@
           /deep/ .el-scrollbar__wrap {
             overflow-x: hidden;
             overflow-y: scroll;
-            padding: 20px;
+            padding: 20px 0;
             box-sizing: border-box;
           }
         }
