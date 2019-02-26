@@ -3,11 +3,11 @@
     <el-row :gutter="40">
       <el-col :span="11">
         <div class="left">
-          <p class="title" @click="enhui()">一级品类</p>
+          <p class="title">一级品类</p>
           <div class="first">
             <div class="scrollbarContainer">
               <el-scrollbar style="height: 100%">
-                <LeftItem v-for="(item,index) of [1,2,3,4,5,6,7]" ref="parent" :key="index"/>
+                <LeftItem v-for="(item,index) of [1,2,3,4,5,6,7]" :key="index"/>
               </el-scrollbar>
             </div>
           </div>
@@ -159,10 +159,6 @@
     methods: {
       cancelModal(type) {
         this.$store.dispatch('dismissModal',type)
-      },
-      enhui() {
-        console.log(this.$refs.parent,'pppp')
-        this.$refs.parent.chang()
       }
     }
   }
