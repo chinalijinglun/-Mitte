@@ -9,7 +9,9 @@
               <el-scrollbar style="height: 100%">
                 <div class="picContainer">
                   <div class="picWrap">
-                    <div class="pic" v-for="(item,index) of picData" :key="index">pic{{item}}</div>
+                    <div class="pic" v-for="(item,index) of picData" :key="index">
+                      <div class="image">pic{{item}}</div>
+                    </div>
                   </div>
                 </div>
               </el-scrollbar>
@@ -119,6 +121,7 @@
 <style scoped lang="less">
   .brand {
     height: calc(100% - 50px);
+    min-width: 1165px;
     /deep/ .el-row {
       height: 100%;
       .el-col {
@@ -140,11 +143,12 @@
       height: 100%;
       .scrollContainer {
         height: 500px;
+        width: 770px;
         /deep/ .el-scrollbar__wrap {
           overflow-x: hidden;
           overflow-y: scroll;
           box-sizing: border-box;
-          padding: 0 10px;
+          /*padding: 0 10px;*/
         }
         .picContainer {
           display: flex;
@@ -153,13 +157,17 @@
             width: 0;
             display: flex;
             flex-wrap: wrap;
-            justify-content: space-between;
+            /*justify-content: space-between;*/
             .pic {
               height: 100px;
-              width: 100px;
-              background-color: #fff;
+              width: 110px;
               margin-bottom: 10px;
-              border-radius: 7px;
+              .image{
+                width: 100px;
+                height: 100%;
+                background-color: #fff;
+                border-radius: 7px;
+              }
             }
           }
         }
