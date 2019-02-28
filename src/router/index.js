@@ -62,8 +62,28 @@ export default new Router({
       children: [
         {
           path:'shops',
-          name:'商品管理',
+          name:'普通商品管理',
           component: () => import('@/pages/shops/index')
+        },
+        {
+          path:'art',
+          name:'艺术商品管理',
+          component: () => import('@/pages/shops/art')
+        },
+        {
+          path:'made',
+          name:'定制商品管理',
+          component: () => import('@/pages/shops/made')
+        },
+        {
+          path:'add',
+          name:'添加商品管理',
+          component: () => import('@/pages/shops/add')
+        },
+        {
+          path:'add_details',
+          name:'添加商品管理详情',
+          component: () => import('@/pages/shops/addDetails')
         }
       ]
     },

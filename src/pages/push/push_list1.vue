@@ -14,7 +14,7 @@
             <img :src="scope.row.pic" alt="" style="width: 50px;height: 50px">
             </template>
         </el-table-column>
-        <el-table-column prop="name" label="商品名称" width="" align='center'></el-table-column>
+        <el-table-column prop="name1" label="商品名称" width="" align='center'></el-table-column>
         <el-table-column prop="time" label="推送时间" width="180" align='center'></el-table-column>
       </el-table>
     </div>
@@ -29,21 +29,21 @@ export default {
             id: '1',
             name: 'Art Life 奥莱特艺术手绘台灯',
             pic: 'https://tva4.sinaimg.cn/crop.0.825.1827.1827.180/6b77ccebjw1e7cp6enewrj21f02ioe81.jpg',
-            name:'艺术先知手机壳',
+            name1:'艺术先知手机壳',
             time:'2016-05-02'
         },
         {
             id: '2',
             name: 'Art Life 奥莱特艺术手绘台灯',
             pic: 'https://tva4.sinaimg.cn/crop.0.825.1827.1827.180/6b77ccebjw1e7cp6enewrj21f02ioe81.jpg',
-            name:'艺术先知手机壳',
+            name1:'艺术先知手机壳',
             time:'2016-05-02'
         },
         {
             id: '3',
             name: 'Art Life 奥莱特艺术手绘台灯',
             pic: 'https://tva4.sinaimg.cn/crop.0.825.1827.1827.180/6b77ccebjw1e7cp6enewrj21f02ioe81.jpg',
-            name:'艺术先知手机壳',
+            name1:'艺术先知手机壳',
             time:'2016-05-02'
         }]
     };

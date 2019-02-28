@@ -2,15 +2,15 @@
   <div class="shops">
     <div class="push_title">
       <router-link to="/shops">
-        <span class="active_title">普通商品</span>
+        <span>普通商品</span>
       </router-link>
       <router-link to="/art">
         <span>艺术商品</span>
       </router-link>
       <router-link to="/made">
-        <span>定制商品</span>
+        <span class="active_title">定制商品</span>
       </router-link>
-      <el-button type="primary" class='add'>添加商品</el-button>
+      
     </div>
     <div class="push_main tableContainer">
       <el-table :data="tableData" style="width: 100%">
@@ -102,9 +102,5 @@ export default {
 }
 .active_title {
   font-size: 24px;
-}
-.add{
-  float: right;
-  margin-right: 20px;
 }
 </style>
