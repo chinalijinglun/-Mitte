@@ -6,15 +6,15 @@
       </el-breadcrumb-item>
     </el-breadcrumb>
     <div class="iconContainer">
-      <div class="editIcon">
-        <i @click="editHandler(navList[0].name)" v-if="navList[0].name === '品类管理' || '品牌管理'" class="el-icon-edit-outline"></i>
+      <div class="editIcon" v-if="navList[0].name === '品类管理' || navList[0].name === '品牌管理'">
+        <i @click="editHandler(navList[0].name)" class="el-icon-edit-outline"></i>
         <ul class="editMenu" v-if="navList[0].name === '品类管理'">
           <li @click="editCategory(1)">修改一级品类</li>
           <li @click="editCategory(2)">修改二级品类</li>
         </ul>
       </div>
-      <div class="addIcon">
-        <i @click="addHandler(navList[0].name)" v-if="navList[0].name === '品类管理' || '品牌管理'" class="el-icon-circle-plus-outline"></i>
+      <div class="addIcon" v-if="navList[0].name === '品类管理' || navList[0].name === '品牌管理'">
+        <i @click="addHandler(navList[0].name)" class="el-icon-circle-plus-outline"></i>
         <ul class="addMenu" v-if="navList[0].name === '品类管理'">
           <li @click="addCategory(1)">添加一级品类</li>
           <li @click="addCategory(2)">添加二级品类</li>
@@ -46,7 +46,7 @@
       }
     },
     created() {
-      this.getNavList()
+      this.getNavList();
     },
     methods: {
       getNavList() {
