@@ -9,8 +9,10 @@
               <el-scrollbar style="height: 100%">
                 <div class="picContainer">
                   <div class="picWrap">
-                    <div class="pic" v-for="(item,index) of picData" :key="index">
-                      <div class="image">pic{{item}}</div>
+                    <div class="pic" @click="getBrandDetail(index)" v-for="(item,index) of brandData" :key="index">
+                      <div class="image">
+                        <img :src="item.image" alt="">
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -22,19 +24,19 @@
       <el-col :span="8">
         <div class="right">
           <p class="title">品牌信息</p>
-          <div class="content">
+          <div class="content" v-if="brandData.length">
             <div class="brandName">
               <p>品牌名称</p>
-              <p>ZHIYAN-之砚</p>
+              <p>{{brandData[detailIndex].name}}</p>
             </div>
             <div class="brandWeight">
               <p>权重</p>
-              <p>99</p>
+              <p>{{brandData[detailIndex].weight}}</p>
             </div>
             <div class="brandShow">
               <p>显示</p>
               <el-switch
-                v-model="isShow"
+                v-model="brandData[detailIndex].show"
                 active-color="#13ce66"
                 inactive-color="#d8d8d8">
               </el-switch>
@@ -93,11 +95,14 @@
 
 <script>
   import { mapState } from 'vuex';
+  import { getBrandReq, updateBrandReq, creatBrandReq } from '../../api/order'
   export default {
     name: "index",
     data() {
       return {
         isShow:false,
+        brandData:[],
+        detailIndex:0
       }
     },
     computed:{
@@ -110,9 +115,22 @@
       },
       ...mapState(['app'])
     },
+    mounted() {
+      this.getBrandList();
+    },
     methods: {
       cancelModal() {
         this.$store.dispatch('dismissModal','brand')
+      },
+      getBrandList() {
+        getBrandReq().then(res => {
+          this.brandData = res.data;
+        }).catch(err => {
+          console.log(err);
+        })
+      },
+      getBrandDetail(index) {
+        this.detailIndex = index;
       }
     }
   }
@@ -167,6 +185,14 @@
                 height: 100%;
                 background-color: #fff;
                 border-radius: 7px;
+                overflow: hidden;
+                &:hover {
+                  cursor: pointer;
+                }
+                img {
+                  width: 100%;
+                  height: 100%;
+                }
               }
             }
           }
