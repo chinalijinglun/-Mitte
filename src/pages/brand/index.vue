@@ -38,6 +38,7 @@
               <el-switch
                 v-model="brandData[detailIndex].show"
                 active-color="#13ce66"
+                @change="toggleShow"
                 inactive-color="#d8d8d8">
               </el-switch>
             </div>
@@ -95,7 +96,8 @@
 
 <script>
   import { mapState } from 'vuex';
-  import { getBrandReq, updateBrandReq, creatBrandReq } from '../../api/order'
+  import { getBrandReq, updateBrandReq, creatBrandReq, updateBrandShowReq } from '../../api/order'
+  import axios from 'axios';
   export default {
     name: "index",
     data() {
@@ -106,13 +108,6 @@
       }
     },
     computed:{
-      picData(){
-        let testData = [];
-        for(let i = 0;i<196;i++){
-          testData.push(i)
-        }
-        return testData
-      },
       ...mapState(['app'])
     },
     mounted() {
@@ -131,6 +126,29 @@
       },
       getBrandDetail(index) {
         this.detailIndex = index;
+      },
+      toggleShow(e) {
+        if(e) {
+          updateBrandShowReq({show:1,id:this.detailIndex}).then(() => {
+            console.log('修改成功1')
+          }).catch((err) => {
+            console.log('修改失败1',err)
+          })
+        }else {
+          updateBrandShowReq({show:0,id:this.detailIndex}).then(() => {
+            console.log('修改成功2')
+          }).catch(() => {
+            console.log('修改失败2')
+          })
+        }
+        // axios.post('http://localhost:5000/api/v1/updateBrandShow',{
+        //   show:1,
+        //   id:1
+        // }).then(res => {
+        //   console.log(res)
+        // }).catch(err => {
+        //   console.log(err)
+        // })
       }
     }
   }

@@ -9,6 +9,15 @@ export function updateBrandReq() {
   })
 }
 
+export function updateBrandShowReq(data) {
+  console.log(data,'-=-=-=')
+  return request({
+    url:'/updateBrandShow',
+    method:'post',
+    data:data
+  })
+}
+
 //添加品牌
 export function creatBrandReq() {
   return request({
