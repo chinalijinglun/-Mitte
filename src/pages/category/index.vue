@@ -7,7 +7,11 @@
           <div class="first">
             <div class="scrollbarContainer">
               <el-scrollbar style="height: 100%">
-                <LeftItem v-for="(item,index) of [1,2,3,4,5,6,7]" :key="index"/>
+                <LeftItem
+                  v-for="(item,index) of categoryFirstData"
+                  :key="index"
+                  :item="item"
+                  :index="index"/>
               </el-scrollbar>
             </div>
           </div>
@@ -16,7 +20,7 @@
       <el-col :span="13">
         <div class="right">
           <p class="title">二级品类</p>
-          <div class="second" @click="test2()">
+          <div class="second">
             <RightItem/>
           </div>
         </div>
@@ -116,11 +120,14 @@
   import { mapState } from 'vuex';
   import LeftItem from './LeftItem/LeftItem';
   import RightItem from './RightItem/RightItem'
+  import { getCategoryFirstReq, getCategorySecondReq } from '../../api/order';
 
   export default {
     name: "index",
     data() {
       return {
+        categoryFirstData:[],
+        categorySecondData:[],
         options: [
           {
             value: '选项1',
@@ -155,10 +162,20 @@
       RightItem
     },
     mounted(){
+      this.getFirstCategory();
     },
     methods: {
       cancelModal(type) {
         this.$store.dispatch('dismissModal',type)
+      },
+      getFirstCategory() {
+        getCategoryFirstReq().then(res => {
+          if(res.code === 200) {
+            this.categoryFirstData = res.data;
+          }
+        }).catch(err => {
+          console.log(err);
+        })
       }
     }
   }
@@ -179,6 +196,7 @@
         height: calc(100% - 80px);
         background-color: #fff;
         border-radius: 7px;
+        overflow: hidden;
         .scrollbarContainer {
           height: 500px;
           /deep/ .el-scrollbar__wrap {
