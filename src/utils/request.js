@@ -11,7 +11,7 @@ const service = axios.create({
 // request拦截器
 service.interceptors.request.use(
   config => {
-    config.headers['Content-Type'] = 'application/*';
+    config.headers['Content-Type'] = 'application/json';
     return config
   },
   error => {
@@ -25,7 +25,7 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   response => {
     /**
-     * code为非20000是抛错 可结合自己业务进行修改
+     * code为非200是抛错 可结合自己业务进行修改
      */
     const res = response.data;
     if (res.code !== 200) {
