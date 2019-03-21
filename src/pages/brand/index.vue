@@ -38,12 +38,12 @@
               <el-switch
                 v-model="brandData[detailIndex].show"
                 active-color="#13ce66"
-                @change="toggleShow"
+                @change="toggleShow(brandData[detailIndex].id,$event)"
                 inactive-color="#d8d8d8">
               </el-switch>
             </div>
             <div class="brandUpdate">
-              <div>
+              <div @click="editBrand">
                 <div>· </div>
                 <div>修改</div>
               </div>
@@ -62,16 +62,26 @@
       </div>
       <div class="dialog-content">
         <div class="left">
-          <el-form label-position="top">
+          <el-form label-position="top" :model="dialogForm">
             <el-form-item label="名称">
-              <el-input></el-input>
+              <el-input v-model="dialogForm.name"></el-input>
             </el-form-item>
             <el-form-item label="权重">
-              <el-input></el-input>
+              <el-input v-model="dialogForm.weight"></el-input>
             </el-form-item>
           </el-form>
           <div class="addPic">
-            <i class="el-icon-plus"></i>
+            <el-upload
+              v-loading="isLoading"
+              class="uploadPic"
+              action="https://jsonplaceholder.typicode.com/posts/"
+              :show-file-list="false"
+              :on-success="handleAvatarSuccess"
+              :before-upload="beforeAvatarUpload"
+            >
+              <img v-if="imageUrl" :src="imageUrl" class="avatar">
+              <i  v-else class="el-icon-plus"></i>
+            </el-upload>
           </div>
         </div>
         <div class="right">
@@ -83,10 +93,15 @@
       <div slot="footer" class="dialog-footer">
         <div class="footerLeft">
           <span>显示</span>
-          <span>显示按钮</span>
+          <el-switch
+            v-model="dialogShowButton"
+            active-color="#13ce66"
+            @change="dialogToggleShow"
+            inactive-color="#d8d8d8">
+          </el-switch>
         </div>
         <div class="footerRight">
-          <button @click="cancelModal()">提交</button>
+          <button @click="createBrand">提交</button>
           <button @click="cancelModal()">取消</button>
         </div>
       </div>
@@ -97,14 +112,22 @@
 <script>
   import { mapState } from 'vuex';
   import { getBrandReq, updateBrandReq, creatBrandReq, updateBrandShowReq } from '../../api/order'
-  import axios from 'axios';
   export default {
     name: "index",
     data() {
       return {
         isShow:false,
         brandData:[],
-        detailIndex:0
+        detailIndex:0,
+        imageUrl:'',
+        isLoading:false,
+        dialogShowButton:false,
+        dialogForm:{
+          name:'',
+          weight:''
+        },
+        editOrCreate:null,
+        brandId:''
       }
     },
     computed:{
@@ -115,6 +138,10 @@
     },
     methods: {
       cancelModal() {
+        this.dialogForm.name = '';
+        this.dialogForm.weight = '';
+        this.imageUrl = '';
+        this.dialogShowButton = false;
         this.$store.dispatch('dismissModal','brand')
       },
       getBrandList() {
@@ -127,32 +154,92 @@
       getBrandDetail(index) {
         this.detailIndex = index;
       },
-      toggleShow(e) {
-        if(e) {
-          updateBrandShowReq({show:1,id:this.detailIndex}).then(() => {
-            console.log('修改成功1')
+      toggleShow(id,event) {
+        if(event) {
+          updateBrandShowReq({show:'1',id:id}).then(() => {
+            this.$message.success('修改成功')
           }).catch((err) => {
-            console.log('修改失败1',err)
+            this.$message.error(err)
           })
         }else {
-          updateBrandShowReq({show:0,id:this.detailIndex}).then(() => {
-            console.log('修改成功2')
-          }).catch(() => {
-            console.log('修改失败2')
+          updateBrandShowReq({show:'0',id:id}).then(() => {
+            this.$message.success('修改成功')
+          }).catch((err) => {
+            this.$message.error(err)
           })
         }
-        // axios.post('http://localhost:5000/api/v1/updateBrandShow',{
-        //   show:1,
-        //   id:1
-        // }).then(res => {
-        //   console.log(res)
-        // }).catch(err => {
-        //   console.log(err)
-        // })
+      },
+      handleAvatarSuccess(res,file) {
+        console.log(res,file,'上传成功');
+        // this.imageUrl = URL.createObjectURL(file.raw);
+        this.isLoading = false
+      },
+      beforeAvatarUpload(file) {
+        console.log(file,'上传前');
+        this.imageUrl = URL.createObjectURL(file);
+        // this.isLoading = true;
+      },
+      dialogToggleShow(event) {
+        this.dialogShowButton = event
+      },
+      createBrand() {
+        let { dialogForm, dialogShowButton, imageUrl, brandId } = this;
+        if(this.editOrCreate === 'edit') {
+          updateBrandReq({
+            name:dialogForm.name,
+            weight:dialogForm.weight,
+            show:dialogShowButton ? '1' : '0',
+            image:imageUrl,
+            id:brandId
+          }).then(res => {
+            if(res.code === 200) {
+              this.editOrCreate = null;
+              this.getBrandList();
+              this.$message.success(res.msg);
+            }else {
+              this.$message.error(res.msg)
+            }
+            this.cancelModal();
+          }).catch(err => {
+            console.log(err)
+          })
+        }else {
+          creatBrandReq({
+            name:dialogForm.name,
+            weight:dialogForm.weight,
+            show:dialogShowButton ? '1' : '0',
+            image:imageUrl
+          }).then(res => {
+            if(res.code === 200) {
+              this.getBrandList();
+              this.$message.success(res.msg);
+            }else {
+              this.$message.error(res.msg)
+            }
+            this.cancelModal();
+          }).catch(err => {
+            console.log(err)
+          })
+        }
+      },
+      editBrand() {
+        //编辑与新建公用一个dialog 设置editOrCreate 标记是新建还是编辑
+        this.editOrCreate = 'edit';
+        //旧数据放入dialog
+        let { name, weight, show, image } = this.brandData[this.detailIndex];
+        this.dialogForm = {
+          name,
+          weight
+        };
+        this.imageUrl = image;
+        this.dialogShowButton = show;
+        this.brandId = this.brandData[this.detailIndex].id;
+        this.$store.dispatch('editBrand')
       }
     }
   }
 </script>
+
 
 <style scoped lang="less">
   .brand {
@@ -251,6 +338,7 @@
             overflow: hidden;
             display: flex;
             justify-content: center;
+            cursor: pointer;
             div:first-child {
               color: #5ac837;
               font-weight: bolder;
@@ -305,9 +393,17 @@
             .addPic {
               height: 100px;
               background-color: #e6e6e6;
-              display: flex;
-              justify-content: center;
-              align-items: center;
+              .el-upload{
+                height: 100%;
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              }
+              .uploadPic,img{
+                height: 100%;
+                width: 100%;
+              }
               i {
                 color: #fff;
                 font-size: 50px;

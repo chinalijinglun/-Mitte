@@ -1,16 +1,15 @@
 import request from '../utils/request'
 
 //修改品牌
-export function updateBrandReq() {
+export function updateBrandReq(data) {
   return request({
     url: '/updateBrand',
     method: 'post',
-    data:{}
+    data
   })
 }
 
 export function updateBrandShowReq(data) {
-  console.log(data,'-=-=-=')
   return request({
     url:'/updateBrandShow',
     method:'post',
@@ -19,11 +18,11 @@ export function updateBrandShowReq(data) {
 }
 
 //添加品牌
-export function creatBrandReq() {
+export function creatBrandReq(data) {
   return request({
     url: '/creatBrand',
     method: 'post',
-    data:{}
+    data
   })
 }
 //获取品牌列表

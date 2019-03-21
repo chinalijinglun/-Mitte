@@ -6,7 +6,7 @@
       </el-breadcrumb-item>
     </el-breadcrumb>
     <div class="iconContainer">
-      <div class="editIcon" v-if="navList[0].name === '品类管理' || navList[0].name === '品牌管理'">
+      <div class="editIcon" v-if="navList[0].name === '品类管理'">
         <i @click="editHandler(navList[0].name)" class="el-icon-edit-outline"></i>
         <ul class="editMenu" v-if="navList[0].name === '品类管理'">
           <li @click="editCategory(1)">修改一级品类</li>
