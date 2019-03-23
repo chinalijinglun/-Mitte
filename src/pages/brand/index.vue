@@ -36,7 +36,7 @@
             <div class="brandShow">
               <p>显示</p>
               <el-switch
-                v-model="brandData[detailIndex].show"
+                :value="brandData[detailIndex].show"
                 active-color="#13ce66"
                 @change="toggleShow(brandData[detailIndex].id,$event)"
                 inactive-color="#d8d8d8">
@@ -155,7 +155,8 @@
         this.detailIndex = index;
       },
       toggleShow(id,event) {
-        if(event) {
+        //废弃的功能
+        /*if(event) {
           updateBrandShowReq({show:'1',id:id}).then(() => {
             this.$message.success('修改成功')
           }).catch((err) => {
@@ -167,7 +168,7 @@
           }).catch((err) => {
             this.$message.error(err)
           })
-        }
+        }*/
       },
       handleAvatarSuccess(res,file) {
         console.log(res,file,'上传成功');
@@ -265,7 +266,7 @@
     .left {
       height: 100%;
       .scrollContainer {
-        height: 500px;
+        height: 100%;
         width: 770px;
         /deep/ .el-scrollbar__wrap {
           overflow-x: hidden;
@@ -323,6 +324,11 @@
           &>p:last-child {
             font-weight: 300;
             font-size: 30px;
+          }
+        }
+        .brandShow {
+          /deep/ .el-switch__core {
+            cursor: default;
           }
         }
         .brandUpdate {

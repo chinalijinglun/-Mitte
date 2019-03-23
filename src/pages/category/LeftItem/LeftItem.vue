@@ -1,10 +1,10 @@
 <template>
-  <div ref="child" class="leftItem" @click="chang()">
+  <div ref="child" class="leftItem">
     <div class="left">
       <p>{{item.name}}</p>
       <p>{{item.weight}}</p>
       <el-switch
-        v-model="item.show"
+        :value="item.show"
         active-color="#13ce66"
         inactive-color="#d8d8d8">
       </el-switch>
@@ -16,27 +16,19 @@
 </template>
 
 <script>
-  let prevNode;
   export default {
     name: "LeftItem",
     data() {
       return {
-        isLight:true
+
       }
     },
-    props:['item'],
+    props:['item','index'],
     mounted() {
-      // console.log(this.$refs.child)
+
     },
     methods:{
-      chang() {
-        if(prevNode) {
-          prevNode.classList.remove('active')
-        }
-        this.$refs.child.classList.add('active');
-        console.log(this.$refs.child);
-        prevNode = this.$refs.child;
-      }
+
     }
   }
 </script>
@@ -57,6 +49,9 @@
       justify-content: space-around;
       /deep/ .el-switch {
         width: 50px;
+        .el-switch__core {
+          cursor: default;
+        }
       }
     }
     .right {
@@ -69,8 +64,5 @@
         height: 100%;
       }
     }
-  }
-  .active {
-    background-color: #e6e6e6;
   }
 </style>

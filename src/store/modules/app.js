@@ -3,25 +3,30 @@ const app = {
   state: {
     isFirstVisible:false,
     isSecondVisible:false,
+    type:'',
     modalTitle:'',
     isBrandModalVisible:false
   },
   mutations: {
     ADD_FIRST_CATEGORY : state => {
       state.isFirstVisible = true;
-      state.modalTitle = '添加一级品类'
+      state.modalTitle = '添加一级品类';
+      state.type = 'addFirst'
     },
     EDIT_FIRST_CATEGORY : state => {
       state.isFirstVisible = true;
-      state.modalTitle = '修改一级品类'
+      state.modalTitle = '修改一级品类';
+      state.type = 'editFirst'
     },
     ADD_SECOND_CATEGORY: state => {
       state.isSecondVisible = true;
-      state.modalTitle = '添加二级品类'
+      state.modalTitle = '添加二级品类';
+      state.type = 'addSecond'
     },
     EDIT_SECOND_CATEGORY: state => {
       state.isSecondVisible = true;
-      state.modalTitle = '修改二级品类'
+      state.modalTitle = '修改二级品类';
+      state.type = 'editSecond'
     },
     DISMISS_MODAL: (state,{type}) => {
       switch (type) {

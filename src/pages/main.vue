@@ -1,7 +1,7 @@
 <template>
-  <el-container>
+  <el-container class="container">
     <left />
-    <el-main>
+    <el-main class="main">
       <Header />
       <router-view />
     </el-main>
@@ -17,9 +17,13 @@
     }
   }
 </script>
-<style scoped>
-  .el-main {
-    background-color: #f2f2f2;
-    padding: 40px;
+<style scoped lang="less">
+  .container {
+    height: 100%;
+    .main {
+      background-color: #f2f2f2;
+      padding: 40px;
+      height: 100%;
+    }
   }
 </style>

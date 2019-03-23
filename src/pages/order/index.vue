@@ -148,7 +148,7 @@
           }
         }
         .bottom {
-          height: 350px;
+          height: calc(75% - 20px);
           /deep/ .el-scrollbar__wrap {
             overflow-x: hidden;
             overflow-y: scroll;

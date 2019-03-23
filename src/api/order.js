@@ -33,19 +33,19 @@ export function getBrandReq() {
   })
 }
 //添加二级品类
-export function createCategorySecondReq() {
+export function createCategorySecondReq(data) {
   return request({
     url: '/createCategorySecond',
     method: 'post',
-    data:{  }
+    data
   })
 }
 //修改二级品类
-export function updateCategorySecondReq(id) {
+export function updateCategorySecondReq(data) {
   return request({
     url: '/updateCategorySecond',
     method: 'post',
-    data:{  }
+    data
   })
 }
 
@@ -57,15 +57,15 @@ export function getCategorySecondReq(id) {
     params:{ id }
   })
 }
-//获取一级品类
-export function updateCategoryFirstReq() {
+//修改一级品类
+export function updateCategoryFirstReq(data) {
   return request({
     url: '/updateCategoryFirst',
     method: 'post',
-    data:{}
+    data
   })
 }
-//修改一级品类
+//获取一级品类
 export function getCategoryFirstReq() {
   return request({
     url: '/getCategoryFirst',
@@ -73,12 +73,11 @@ export function getCategoryFirstReq() {
   })
 }
 //添加一级品类
-
-export function createCategoryFirstReq() {
+export function createCategoryFirstReq(data) {
   return request({
-    url: '/getCategoryFirst',
+    url: '/createCategoryFirst',
     method: 'post',
-    data:{}
+    data
   })
 }
 
