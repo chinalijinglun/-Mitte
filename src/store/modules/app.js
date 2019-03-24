@@ -5,7 +5,8 @@ const app = {
     isSecondVisible:false,
     type:'',
     modalTitle:'',
-    isBrandModalVisible:false
+    isBrandModalVisible:false,
+    orderRowData:null
   },
   mutations: {
     ADD_FIRST_CATEGORY : state => {
@@ -50,6 +51,9 @@ const app = {
     ADD_BRAND: (state) => {
       state.isBrandModalVisible = true;
       state.modalTitle = '添加品牌'
+    },
+    ORDER_ROW_DATA:(state,data) => {
+      state.orderRowData = data;
     }
   },
   actions: {
@@ -73,6 +77,9 @@ const app = {
     },
     addBrand:({commit}) => {
       commit('ADD_BRAND')
+    },
+    orderRowData:({commit},data) => {
+      commit('ORDER_ROW_DATA',data)
     }
   }
 };

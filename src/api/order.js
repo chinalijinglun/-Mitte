@@ -101,7 +101,7 @@ export function getOrderDetailReq(id) {
 export function getUserInfoReq(id) {
   return request({
     url: '/getUserInfo',
-    method: 'post',
+    method: 'get',
     params:{ id }
   })
 }

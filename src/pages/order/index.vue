@@ -29,12 +29,12 @@
           <div class="info">
             <div class="top">
               <p>
-                <span>我是收货人</span>
-                <span>18128475483</span>
+                <span>{{userInfo.name}}</span>
+                <span>{{userInfo.phone}}</span>
               </p>
-              <p>北京市朝阳区天堂路122号</p>
-              <p>积分5元</p>
-              <p>微信支付</p>
+              <p>{{userInfo.address}}</p>
+              <p>积分{{app.orderRowData ? app.orderRowData.score_price : ''}}元</p>
+              <p>{{app.orderRowData ? app.orderRowData.pay_type : ''}}</p>
             </div>
             <div class="middle">
               <div></div>
@@ -43,13 +43,7 @@
             </div>
             <div class="bottom">
               <el-scrollbar style="height: 100%">
-                <ShopsInfo />
-                <ShopsInfo />
-                <ShopsInfo />
-                <ShopsInfo />
-                <ShopsInfo />
-                <ShopsInfo />
-
+                <ShopsInfo v-for="(item,index) of goodList" :key="index" :item="item"/>
               </el-scrollbar>
             </div>
           </div>
@@ -61,8 +55,48 @@
 
 <script>
   import ShopsInfo from './ShopsInfo/ShopsInfo';
+  import { mapState } from 'vuex';
+  import { getUserInfoReq, getOrderDetailReq } from '../../api/order';
   export default {
     name: "index",
+    data() {
+      return {
+        userInfo:'',
+        goodList:[]
+      }
+    },
+    computed:{
+      ...mapState(['app'])
+    },
+    watch: {
+      'app.orderRowData'(val) {
+        this.getUserInfo(val.user_id);
+        this.getGoodList(val.id);
+      }
+    },
+    mounted() {
+
+    },
+    methods: {
+      getUserInfo(id) {
+        getUserInfoReq(id).then(res => {
+          if(res.code === 200) {
+            this.userInfo = res.data;
+          }
+        }).catch(err => {
+          console.log(err)
+        })
+      },
+      getGoodList(id) {
+        getOrderDetailReq(id).then(res => {
+          if(res.code === 200) {
+            this.goodList = res.data;
+          }
+        }).catch(err => {
+          console.log(err);
+        })
+      }
+    },
     components: {
       ShopsInfo
     }
