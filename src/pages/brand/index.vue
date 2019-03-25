@@ -74,7 +74,7 @@
             <el-upload
               v-loading="isLoading"
               class="uploadPic"
-              action="https://jsonplaceholder.typicode.com/posts/"
+              :action=`${BASE_URL}/upload`
               :show-file-list="false"
               :on-success="handleAvatarSuccess"
               :before-upload="beforeAvatarUpload"
@@ -110,6 +110,7 @@
 </template>
 
 <script>
+  import { BASE_URL } from '../../utils'
   import { mapState } from 'vuex';
   import { getBrandReq, updateBrandReq, creatBrandReq, updateBrandShowReq } from '../../api/order'
   export default {
@@ -171,14 +172,17 @@
         }*/
       },
       handleAvatarSuccess(res,file) {
+        if(res.code === 200) {
+          this.imageUrl = res.data.url;
+          this.isLoading = false
+        }
         console.log(res,file,'上传成功');
         // this.imageUrl = URL.createObjectURL(file.raw);
-        this.isLoading = false
       },
       beforeAvatarUpload(file) {
         console.log(file,'上传前');
-        this.imageUrl = URL.createObjectURL(file);
-        // this.isLoading = true;
+        // this.imageUrl = URL.createObjectURL(file);
+        this.isLoading = true;
       },
       dialogToggleShow(event) {
         this.dialogShowButton = event

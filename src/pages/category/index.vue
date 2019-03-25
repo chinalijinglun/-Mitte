@@ -51,7 +51,7 @@
           <div class="addPic">
             <el-upload
               class="uploadPic"
-              action="https://jsonplaceholder.typicode.com/posts/"
+              :action=`${BASE_URL}/upload`
               :show-file-list="false"
               :on-success="handleAvatarSuccess"
               :before-upload="beforeAvatarUpload"
@@ -158,6 +158,7 @@
 </template>
 
 <script>
+  import { BASE_URL } from '../../utils/index'
   import { mapState } from 'vuex';
   import LeftItem from './LeftItem/LeftItem';
   import RightItem from './RightItem/RightItem'
@@ -243,14 +244,17 @@
         this.secondRowData = {} //切换一级品类时，把dialogSecond的数据置空
       },
       handleAvatarSuccess(res,file) {
-        console.log(res,file,'上传成功');
+        if(res.code === 200) {
+          this.imageUrl = res.data.url;
+          this.isLoading = false;
+          console.log(res,file,'上传成功');
+        }
         // this.imageUrl = URL.createObjectURL(file.raw);
-        this.isLoading = false
       },
       beforeAvatarUpload(file) {
         console.log(file,'上传前');
-        this.firstForm.imageUrl = URL.createObjectURL(file);
-        // this.isLoading = true;
+        // this.firstForm.imageUrl = URL.createObjectURL(file);
+        this.isLoading = true;
       },
       dialogOpenHandler() {
         let { name, img, show, weight, id } = this.categoryFirstData[this.currentIndex];
