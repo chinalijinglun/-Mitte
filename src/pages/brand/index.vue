@@ -74,7 +74,7 @@
             <el-upload
               v-loading="isLoading"
               class="uploadPic"
-              :action=`${BASE_URL}/upload`
+              :action="`${BASE_URL}/upload`"
               :show-file-list="false"
               :on-success="handleAvatarSuccess"
               :before-upload="beforeAvatarUpload"
@@ -117,6 +117,7 @@
     name: "index",
     data() {
       return {
+        BASE_URL:BASE_URL,
         isShow:false,
         brandData:[],
         detailIndex:0,

@@ -51,7 +51,7 @@
           <div class="addPic">
             <el-upload
               class="uploadPic"
-              :action=`${BASE_URL}/upload`
+              :action="`${BASE_URL}/upload`"
               :show-file-list="false"
               :on-success="handleAvatarSuccess"
               :before-upload="beforeAvatarUpload"
@@ -175,6 +175,7 @@
     name: "index",
     data() {
       return {
+        BASE_URL:BASE_URL,
         categoryFirstData:[],
         categorySecondData:[],
         currentIndex:0, //一级品类
@@ -245,7 +246,7 @@
       },
       handleAvatarSuccess(res,file) {
         if(res.code === 200) {
-          this.imageUrl = res.data.url;
+          this.firstForm.imageUrl = res.data.url;
           this.isLoading = false;
           console.log(res,file,'上传成功');
         }
