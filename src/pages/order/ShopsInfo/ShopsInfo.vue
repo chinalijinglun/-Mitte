@@ -13,18 +13,33 @@
         <p>{{item.price * item.orders[0].order_goods.count}}元</p>
       </div>
     </div>
-    <div class="bottom">
-      <div>
-        <span>·</span>发货
-      </div>
-    </div>
+
   </div>
 </template>
 
 <script>
+  import { mapState } from 'vuex';
   export default {
     name: "ShopsInfo",
+    data() {
+      return {
+        doName:''
+      }
+    },
     props:['item'],
+    computed: {
+      ...mapState(['app'])
+    },
+    watch:{
+      'app.orderRowData'(val) {
+        // console.log(val,'val')
+      }
+    },
+    methods: {
+      getDoName() {
+
+      }
+    },
     mounted() {
 
     }
@@ -68,25 +83,6 @@
         }
       }
     }
-    .bottom {
-      height: 30px;
-      font-size: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      padding: 0 10px;
-      &>div {
-        background-color: #fff;
-        border:1px solid #d8d8d8;
-        border-radius: 10px;
-        width: 60px;
-        text-align: center;
-        height: 20px;
-        &>span {
-          color: aqua;
-          font-weight: bolder;
-        }
-      }
-    }
+
   }
 </style>

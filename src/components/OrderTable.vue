@@ -48,6 +48,7 @@
 
 <script>
   import { getOrderListReq } from '../api/order';
+  import { mapState } from 'vuex';
   export default {
     name: "OrderTable",
     data() {
@@ -61,8 +62,8 @@
       }
     },
     mounted() {
+      this.$eventHub.$on('updateList',this.getTableList);
       this.getTableList();
-
     },
     methods: {
       getTableList() {
@@ -84,7 +85,12 @@
         getOrderListReq(type).then(res => {
           if(res.code === 200) {
             this.list = res.data;
-            this.$refs.singleTable.setCurrentRow(this.list[0]);
+            if(this.list.length) {
+              this.$refs.singleTable.setCurrentRow(this.list[0]);
+            }else {
+              this.$refs.singleTable.setCurrentRow(null);
+            }
+
           }
         }).catch(err => {
           console.log(err)

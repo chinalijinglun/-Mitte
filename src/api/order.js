@@ -97,6 +97,22 @@ export function getOrderDetailReq(id) {
     params: { id }
   })
 }
+//根据id修改订单状态
+export function updateOrderStatus(data) {
+  return request({
+    url:'/updateOrderStatus',
+    method:'post',
+    data
+  })
+}
+//根据id把已完成订单转到售后
+export function toSaleBack(data) {
+  return request({
+    url:'/toSaleBack',
+    method:'post',
+    data
+  })
+}
 //根据用户id获取用户信息
 export function getUserInfoReq(id) {
   return request({

@@ -6,7 +6,8 @@ const app = {
     type:'',
     modalTitle:'',
     isBrandModalVisible:false,
-    orderRowData:null
+    orderRowData:null,
+    orderId:null
   },
   mutations: {
     ADD_FIRST_CATEGORY : state => {
