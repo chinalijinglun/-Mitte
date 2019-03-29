@@ -121,3 +121,11 @@ export function getUserInfoReq(id) {
     params:{ id }
   })
 }
+//根据type获取商品列表
+export function getShopListReq(type) {
+  return request({
+    url: '/getShopList',
+    method: 'get',
+    params:{ type }
+  })
+}

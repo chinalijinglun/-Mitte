@@ -90,7 +90,6 @@
             }else {
               this.$refs.singleTable.setCurrentRow(null);
             }
-
           }
         }).catch(err => {
           console.log(err)
