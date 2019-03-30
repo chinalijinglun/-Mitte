@@ -16,7 +16,7 @@
       <el-table :data="tableData" style="width: 100%">
         <el-table-column prop="id" label="序列号" width="180" align="center"></el-table-column>
         <el-table-column prop="name" label="商品名称" width align="center"></el-table-column>
-        <el-table-column prop="brand" label="商品名称" width align="center"></el-table-column>
+        <el-table-column prop="brand" label="品牌" width align="center"></el-table-column>
         <el-table-column prop="pic" label="商品图片" width="180" align="center">
           <template slot-scope="scope">
             <img :src="scope.row.pic" alt style="width: 50px;height: 50px">
