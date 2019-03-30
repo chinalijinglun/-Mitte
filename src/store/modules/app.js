@@ -3,25 +3,32 @@ const app = {
   state: {
     isFirstVisible:false,
     isSecondVisible:false,
+    type:'',
     modalTitle:'',
-    isBrandModalVisible:false
+    isBrandModalVisible:false,
+    orderRowData:null,
+    orderId:null
   },
   mutations: {
     ADD_FIRST_CATEGORY : state => {
       state.isFirstVisible = true;
-      state.modalTitle = '添加一级品类'
+      state.modalTitle = '添加一级品类';
+      state.type = 'addFirst'
     },
     EDIT_FIRST_CATEGORY : state => {
       state.isFirstVisible = true;
-      state.modalTitle = '修改一级品类'
+      state.modalTitle = '修改一级品类';
+      state.type = 'editFirst'
     },
     ADD_SECOND_CATEGORY: state => {
       state.isSecondVisible = true;
-      state.modalTitle = '添加二级品类'
+      state.modalTitle = '添加二级品类';
+      state.type = 'addSecond'
     },
     EDIT_SECOND_CATEGORY: state => {
       state.isSecondVisible = true;
-      state.modalTitle = '修改二级品类'
+      state.modalTitle = '修改二级品类';
+      state.type = 'editSecond'
     },
     DISMISS_MODAL: (state,{type}) => {
       switch (type) {
@@ -45,6 +52,9 @@ const app = {
     ADD_BRAND: (state) => {
       state.isBrandModalVisible = true;
       state.modalTitle = '添加品牌'
+    },
+    ORDER_ROW_DATA:(state,data) => {
+      state.orderRowData = data;
     }
   },
   actions: {
@@ -68,6 +78,9 @@ const app = {
     },
     addBrand:({commit}) => {
       commit('ADD_BRAND')
+    },
+    orderRowData:({commit},data) => {
+      commit('ORDER_ROW_DATA',data)
     }
   }
 };

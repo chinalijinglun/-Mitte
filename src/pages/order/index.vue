@@ -28,13 +28,13 @@
           <p class="title">商品信息</p>
           <div class="info">
             <div class="top">
-              <p>
-                <span>我是收货人</span>
-                <span>18128475483</span>
+              <p v-if="userInfo">
+                <span>{{userInfo.name}}</span>
+                <span>{{userInfo.phone}}</span>
               </p>
-              <p>北京市朝阳区天堂路122号</p>
-              <p>积分5元</p>
-              <p>微信支付</p>
+              <p v-if="userInfo">{{userInfo.address}}</p>
+              <p v-if="userInfo">积分{{app.orderRowData ? app.orderRowData.score_price : ''}}元</p>
+              <p v-if="userInfo">{{app.orderRowData ? app.orderRowData.pay_type : ''}}</p>
             </div>
             <div class="middle">
               <div></div>
@@ -42,14 +42,13 @@
               <div></div>
             </div>
             <div class="bottom">
-              <el-scrollbar style="height: 100%">
-                <ShopsInfo />
-                <ShopsInfo />
-                <ShopsInfo />
-                <ShopsInfo />
-                <ShopsInfo />
-                <ShopsInfo />
-
+              <el-scrollbar style="height: 100%" v-if="goodList.length">
+                <ShopsInfo v-for="(item,index) of goodList" :key="index" :item="item"/>
+                <div class="handle" v-if="handleName">
+                  <div @click="handleTableList">
+                    <span>·</span>{{handleName}}
+                  </div>
+                </div>
               </el-scrollbar>
             </div>
           </div>
@@ -61,8 +60,115 @@
 
 <script>
   import ShopsInfo from './ShopsInfo/ShopsInfo';
+  import { mapState } from 'vuex';
+  import { getUserInfoReq, getOrderDetailReq, updateOrderStatus, toSaleBack } from '../../api/order';
   export default {
     name: "index",
+    data() {
+      return {
+        userInfo:'',
+        goodList:[],
+        handleName:''
+      }
+    },
+    computed:{
+      ...mapState(['app'])
+    },
+    watch: {
+      'app.orderRowData'(val) {
+        if(val) {
+          this.getUserInfo(val.user_id);
+          this.getGoodList(val.id);
+        }else {
+          this.userInfo = null;
+          this.goodList = []
+        }
+
+      },
+      $route() {
+        this.getHandleName()
+      }
+    },
+    mounted() {
+      this.getHandleName();
+    },
+    methods: {
+      getUserInfo(id) {
+        getUserInfoReq(id).then(res => {
+          if(res.code === 200) {
+            this.userInfo = res.data;
+          }
+        }).catch(err => {
+          console.log(err)
+        })
+      },
+      getGoodList(id) {
+        getOrderDetailReq(id).then(res => {
+          if(res.code === 200) {
+            this.goodList = res.data;
+          }
+        }).catch(err => {
+          console.log(err);
+        })
+      },
+      getHandleName() {
+        switch (this.$route.name) {
+          case '待发货' :
+            this.handleName = '发货';
+            break;
+          case '已发货' :
+            this.handleName = '完成';
+            break;
+          case '已完成' :
+            this.handleName = '售后';
+            break;
+          default :
+            return;
+        }
+      },
+      handleTableList() {
+        switch (this.$route.name) {
+          case '待发货' :
+            updateOrderStatus({
+              id:this.app.orderRowData.id,
+              status:'已发货'
+            }).then(res => {
+              if(res.code === 200) {
+                this.$eventHub.$emit('updateList');
+                this.$message.success('发货成功');
+              }
+            }).catch(err => {
+              console.log(err)
+            });
+            break;
+          case '已发货' :
+            updateOrderStatus({
+              id:this.app.orderRowData.id,
+              status:'已完成'
+            }).then(res => {
+              if(res.code === 200) {
+                this.$eventHub.$emit('updateList');
+                this.$message.success('操作成功');
+              }
+            }).catch(err => {
+              console.log(err)
+            });
+            break;
+          case '已完成' :
+            toSaleBack({
+              id:this.app.orderRowData.id
+            }).then(res => {
+              this.$eventHub.$emit('updateList');
+              this.$message.success('发起售后成功');
+            }).catch(err => {
+              console.log(err)
+            });
+            break;
+          default :
+            return;
+        }
+      }
+    },
     components: {
       ShopsInfo
     }
@@ -148,12 +254,34 @@
           }
         }
         .bottom {
-          height: 350px;
+          height: calc(75% - 20px);
           /deep/ .el-scrollbar__wrap {
             overflow-x: hidden;
             overflow-y: scroll;
             padding: 20px;
             box-sizing: border-box;
+          }
+
+          .handle {
+            height: 30px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 0 10px;
+            &>div {
+              background-color: #fff;
+              border:1px solid #d8d8d8;
+              border-radius: 10px;
+              width: 60px;
+              text-align: center;
+              height: 20px;
+              cursor: pointer;
+              &>span {
+                color: aqua;
+                font-weight: bolder;
+              }
+            }
           }
         }
       }

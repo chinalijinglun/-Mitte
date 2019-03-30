@@ -43,7 +43,8 @@
       >
         <template slot-scope="scope">
           <el-switch
-            v-model="scope.row.isShow"
+            class="switch"
+            :value="scope.row.show"
             active-color="#13ce66"
             inactive-color="#d8d8d8">
           </el-switch>
@@ -58,43 +59,13 @@
     name: "RightItem",
     data() {
       return {
-        secondList:[
-          {
-            name:'耳饰耳钉',
-            property:['颜色','尺码/尺寸','材质','发货时间'],
-            weight:99,
-            isShow:true
-          },
-          {
-            name:'耳饰耳钉',
-            property:['颜色','尺码/尺寸','材质','发货时间'],
-            weight:99,
-            isShow:true
-          },
-          {
-            name:'耳饰耳钉',
-            property:['颜色','尺码/尺寸','材质','发货时间'],
-            weight:99,
-            isShow:true
-          },
-          {
-            name:'耳饰耳钉',
-            property:['颜色','尺码/尺寸','材质','发货时间'],
-            weight:99,
-            isShow:true
-          },
-          {
-            name:'耳饰耳钉',
-            property:['颜色','尺码/尺寸','材质','发货时间'],
-            weight:99,
-            isShow:true
-          },
-        ]
+
       }
     },
+    props:['secondList'],
     methods: {
-      handleCurrentChange() {
-
+      handleCurrentChange(rowData) {
+        this.$emit('rowData',rowData)
       }
     }
   }
@@ -111,6 +82,11 @@
     /deep/ .el-table {
       &::before {
         background-color: transparent;
+      }
+    }
+    .switch {
+      /deep/ .el-switch__core {
+        cursor: default;
       }
     }
     .property {
