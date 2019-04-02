@@ -2,26 +2,34 @@
   <div class="push">
     <div class="title">选择添加商品品类</div>
     <div class="push_main tableContainer">
-      <el-form ref="form" :model="form" label-width="180px" class="push_form">
+      <el-form
+        ref="form"
+        :model="form"
+        label-width="180px"
+        class="push_form"
+      >
         <el-form-item label="选择品类">
-          <el-cascader :options="options1" v-model="selectedOptions" @change="handleChange"></el-cascader>
+          <el-cascader
+            :options="categoryOptions"
+            v-model="selectedOptions"
+            @change="handleChange"
+          >
+          </el-cascader>
         </el-form-item>
         <el-form-item label="选择品牌">
-          <el-select v-model="value" placeholder="请选择">
+          <el-select v-model="brandValue" placeholder="请选择">
             <el-option
-              v-for="item in options"
-              :key="item.value"
+              v-for="(item,index) in brandNameOptions"
+              :key="index"
               :label="item.label"
               :value="item.value"
             ></el-option>
           </el-select>
         </el-form-item>
         <el-form-item class="btn">
-        <router-link to="/add_details">
           <el-button type="primary" @click="onSubmit">
               添加商品
           </el-button>
-          </router-link>
           <el-button>取消</el-button>
         </el-form-item>
       </el-form>
@@ -30,81 +38,54 @@
 </template>
 
 <script>
+  import { getCategoryNamesReq, getBrandNamesReq } from '../../api/order'
 export default {
   name: "index",
   data() {
     return {
-      form: {},
+      form:{},
       selectedOptions: [],
-      value: "",
-      options: [
-        {
-          value: "1",
-          label: "adidas"
-        },
-        {
-          value: "2",
-          label: "nike"
-        },
-        {
-          value: "3",
-          label: "sony"
-        },
-        {
-          value: "4",
-          label: "asics"
-        }
-      ],
-      options1: [
-        {
-          value: "zhinan",
-          label: "家居服饰",
-          children: [
-            {
-              value: "shejiyuanze",
-              label: "服饰",
-              children: [
-                {
-                  value: "yizhi",
-                  label: "卫衣"
-                },
-                {
-                  value: "fankui",
-                  label: "女裙"
-                },
-                {
-                  value: "xiaolv",
-                  label: "外套"
-                },
-                {
-                  value: "kekong",
-                  label: "男裤"
-                }
-              ]
-            },{
-                value: "shejiyuanze",
-                label: "首饰",
-                children: [
-                    {
-                    value: "yizhi",
-                    label: "项链"
-                    },{
-                    value: "yizhi",
-                    label: "耳环"
-                    },
-              ]
-            }
-          ]
-        }
-      ]
+      brandValue: "",
+      brandNameOptions: [],
+      categoryOptions: []
     };
+  },
+  mounted() {
+    this.getCategoryNames();
+    this.getBrandNames();
   },
   methods: {
     onSubmit(e) {
-      console.log(e);
+      if(this.brandValue && this.categoryOptions.length) {
+        let { selectedOptions, brandValue } = this;
+        this.$router.push({
+          path:'/add_details',
+          query:{ brandValue, selectedOptions }
+        })
+      }else {
+        this.$message.warning('品类和品牌必须选择')
+      }
     },
     handleChange(value) {
       console.log(value);
+    },
+    getCategoryNames() {
+      getCategoryNamesReq().then(res => {
+        if(res.code === 200) {
+          this.categoryOptions = res.data;
+        }
+      }).catch(err => {
+        console.log(err);
+      })
+    },
+    getBrandNames() {
+      getBrandNamesReq().then(res => {
+        if(res.code === 200) {
+          this.brandNameOptions = res.data;
+        }
+      }).catch(err => {
+        console.log(err);
+      })
     }
   }
 };

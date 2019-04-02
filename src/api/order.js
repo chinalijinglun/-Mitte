@@ -129,3 +129,18 @@ export function getShopListReq(type) {
     params:{ type }
   })
 }
+//商品api
+//添加商品获取品类列表
+export function getCategoryNamesReq() {
+  return request({
+    url:'/getCategoryNames',
+    method:'get'
+  })
+}
+//获取品牌名列表
+export function getBrandNamesReq() {
+  return request({
+    url:'/getBrandNames',
+    method:'get'
+  })
+}
