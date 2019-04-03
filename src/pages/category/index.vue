@@ -51,6 +51,7 @@
           <div class="addPic">
             <el-upload
               class="uploadPic"
+              v-loading="isLoading"
               :action="`${BASE_URL}/upload`"
               :show-file-list="false"
               :on-success="handleAvatarSuccess"

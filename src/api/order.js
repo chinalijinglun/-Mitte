@@ -144,3 +144,11 @@ export function getBrandNamesReq() {
     method:'get'
   })
 }
+//添加商品
+export function createShopReq(data) {
+  return request({
+    url:'/createShop',
+    method:'post',
+    data
+  })
+}
