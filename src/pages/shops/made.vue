@@ -17,19 +17,21 @@
       </el-button>
     </div>
     <div class="push_main tableContainer">
-      <el-table :data="tableData" style="width: 100%">
-        <el-table-column type="index" label="序列号" width="180" align="center"></el-table-column>
-        <el-table-column prop="name" label="商品名称" width align="center"></el-table-column>
-        <el-table-column prop="brand_name" label="品牌名称" width align="center"></el-table-column>
-        <el-table-column prop="img" label="商品图片" width="180" align="center">
-          <template slot-scope="scope">
-            <img :src="scope.row.img" alt style="width: 50px;height: 50px">
-          </template>
-        </el-table-column>
-        <el-table-column prop="volume" label="销量" width align="center"></el-table-column>
-        <el-table-column prop="create_time" label="创建时间" width="180" align="center"></el-table-column>
-        <el-table-column prop="update_time" label="更新时间" width="180" align="center"></el-table-column>
-      </el-table>
+      <el-scrollbar style="height: 100%">
+        <el-table :data="tableData" style="width: 100%">
+          <el-table-column type="index" label="序列号" width="180" align="center"></el-table-column>
+          <el-table-column prop="name" label="商品名称" width align="center"></el-table-column>
+          <el-table-column prop="brand_name" label="品牌名称" width align="center"></el-table-column>
+          <el-table-column prop="img" label="商品图片" width="180" align="center">
+            <template slot-scope="scope">
+              <img :src="scope.row.img" alt style="width: 50px;height: 50px">
+            </template>
+          </el-table-column>
+          <el-table-column prop="volume" label="销量" width align="center"></el-table-column>
+          <el-table-column prop="create_time" label="创建时间" width="180" align="center"></el-table-column>
+          <el-table-column prop="update_time" label="更新时间" width="180" align="center"></el-table-column>
+        </el-table>
+      </el-scrollbar>
     </div>
   </div>
 </template>
@@ -66,6 +68,12 @@
   overflow: hidden;
   height: calc(100vh - 200px);
   background-color: #fff;
+  /deep/ .el-scrollbar__wrap {
+    overflow-x: hidden;
+    overflow-y: scroll;
+    padding: 20px;
+    box-sizing: border-box;
+  }
   /deep/ .el-table {
     &::before {
       background-color: transparent;
