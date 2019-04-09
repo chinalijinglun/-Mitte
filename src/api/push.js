@@ -15,3 +15,19 @@ export function getType(type) {
         method: 'get'
     })
 }
+
+// 售后列表
+export function getOrderList() {
+    return request({
+        url: `/sale/list/`,
+        method: 'get'
+    })
+}
+// 售后人员
+export function getUserInfo(id) {
+    return request({
+        url: `/sale/user`,
+        method: 'get',
+        params: { id }
+    })
+}
