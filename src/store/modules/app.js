@@ -7,7 +7,8 @@ const app = {
     modalTitle:'',
     isBrandModalVisible:false,
     orderRowData:null,
-    orderId:null
+    orderId:null,
+    badgeValue:0
   },
   mutations: {
     ADD_FIRST_CATEGORY : state => {
@@ -55,6 +56,9 @@ const app = {
     },
     ORDER_ROW_DATA:(state,data) => {
       state.orderRowData = data;
+    },
+    BADGE_VALUE: (state,data) => {
+      state.badgeValue = data;
     }
   },
   actions: {
@@ -81,6 +85,9 @@ const app = {
     },
     orderRowData:({commit},data) => {
       commit('ORDER_ROW_DATA',data)
+    },
+    getBadgeValue:({commit},data) => {
+      commit('BADGE_VALUE',data)
     }
   }
 };

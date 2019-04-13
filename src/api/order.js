@@ -152,3 +152,11 @@ export function createShopReq(data) {
     data
   })
 }
+//发货后更新shop商品销量(volume)
+export function updateVolume(data) {
+  return request({
+    url:'/updateVolume',
+    method: 'post',
+    data
+  })
+}

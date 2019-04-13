@@ -5,9 +5,11 @@
         <div class="left">
           <div class="nav">
             <p>
-              <router-link to="/order/ship">
-                待发货
-              </router-link>
+              <el-badge :value="app.badgeValue" class="badge">
+                <router-link to="/order/ship">
+                  待发货
+                </router-link>
+              </el-badge>
             </p>
             <p>
               <router-link to="/order/shipped">
@@ -61,7 +63,13 @@
 <script>
   import ShopsInfo from './ShopsInfo/ShopsInfo';
   import { mapState } from 'vuex';
-  import { getUserInfoReq, getOrderDetailReq, updateOrderStatus, toSaleBack } from '../../api/order';
+  import {
+    getUserInfoReq,
+    getOrderDetailReq,
+    updateOrderStatus,
+    toSaleBack,
+    updateVolume
+  } from '../../api/order';
   export default {
     name: "index",
     data() {
@@ -126,20 +134,38 @@
             return;
         }
       },
+      //点击发货后更新商品表的volume销量以及更新订单的status状态
+
+      toSale() {
+        let { goodList } = this;
+        let promiseArr = [];
+        goodList.forEach((item,index) => {
+          promiseArr.push(
+            updateVolume({
+              id:item.id,
+              volume:item.orders[0].order_goods.count
+            })
+          )
+        });
+        Promise.all(promiseArr).then(res => {
+          updateOrderStatus({
+            id:this.app.orderRowData.id,
+            status:'已发货'
+          }).then(res => {
+            if(res.code === 200) {
+              this.$eventHub.$emit('updateList');
+              this.$message.success('发货成功');
+            }
+          }).catch(err => {
+            console.log(err)
+          });
+        }).catch()
+      },
+
       handleTableList() {
         switch (this.$route.name) {
           case '待发货' :
-            updateOrderStatus({
-              id:this.app.orderRowData.id,
-              status:'已发货'
-            }).then(res => {
-              if(res.code === 200) {
-                this.$eventHub.$emit('updateList');
-                this.$message.success('发货成功');
-              }
-            }).catch(err => {
-              console.log(err)
-            });
+            this.toSale();
             break;
           case '已发货' :
             updateOrderStatus({
@@ -202,6 +228,10 @@
             color: #000;
             font-size: 24px;
             font-weight: 500;
+          }
+          .badge {
+            height: auto;
+            line-height: initial;
           }
         }
       }
