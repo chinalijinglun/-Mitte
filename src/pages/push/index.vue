@@ -29,8 +29,9 @@
           </el-upload>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="onSubmit">提交</el-button>
-          <el-button>取消</el-button>
+          <el-button type="primary" @click="onSubmit" v-if="!id">提交</el-button>
+          <el-button type="primary" @click="onSubmit1" v-if="id">修改</el-button>
+          <el-button @click="back">取消</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -39,7 +40,7 @@
 
 <script>
 import { BASE_URL } from '../../utils'
-import { addPushDetails } from '@/api/push'
+import { addPushDetails, getPushDetail, updatePushDetail } from '@/api/push'
 export default {
   name: "index",
   data() {
@@ -52,10 +53,17 @@ export default {
         shop: ''
       },
       imageUrl: '',
-      isLoading: false
+      isLoading: false,
+      id: ''
     }
   },
+  created() {
+    this.id = this.$route.query.id;
+  },
   methods: {
+    back() {
+      this.$router.push('/shop_list')
+    },
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw);
     },
@@ -96,6 +104,39 @@ export default {
       console.log(file, '上传前');
       this.isLoading = true;
     },
+    onSubmit1() {
+      this.updatePushDetail()
+    },
+    getPushDetail(id) {
+      getPushDetail(id).then(data => {
+        if (data.code == 200) {
+          this.form.text = data.data.push_name;
+          this.form.region = data.data.type;
+          this.form.shop = data.data.shop_name;
+          this.form.detail = data.data.push_content;
+          this.imageUrl = data.data.img;
+        }
+      })
+    },
+    updatePushDetail() {
+      updatePushDetail({
+        id: this.id,
+        type: this.form.region,
+        shop_name: 'test123',
+        img: this.imageUrl,
+        push_name: this.form.text,
+        push_content: this.form.detail
+      }).then(data => {
+        if (data.code == 200) {
+          this.$router.push('/shop_list')
+        }
+      })
+    }
+  },
+  watch: {
+    id(n) {
+      this.getPushDetail(n);
+    }
   }
 }
 </script>

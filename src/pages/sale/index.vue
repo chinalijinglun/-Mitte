@@ -7,7 +7,7 @@
             <p class="title">售后管理</p>
           </div>
           <div class="tableContainer">
-            <el-table :data="list" highlight-current-row @current-change="handleCurrentChange" style="width: 100%" :cell-style="{border:'none'}" :header-cell-style="{border:'none'}">
+            <el-table :data="list" highlight-current-row @current-change="handleCurrentChange" style="width: 100%" :cell-style="{border:'none'}" :header-cell-style="{border:'none'}" @row-click="changeInfo">
               <el-table-column label="序列号" type="index" width="70" align="center">
               </el-table-column>
               <el-table-column label="订单编号" prop="pay_type" align="center">
@@ -106,6 +106,9 @@ export default {
           this.userInfo = data.data;
         }
       })
+    },
+    changeInfo(val) {
+      console.log(val)
     }
   },
   components: {

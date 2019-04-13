@@ -16,6 +16,11 @@
         </el-table-column>
         <el-table-column prop="shop_name" label="商品名称" width="" align='center'></el-table-column>
         <el-table-column prop="updatedAt" label="推送时间" width="180" align='center'></el-table-column>
+        <el-table-column fixed="right" label="操作" width="100">
+          <template slot-scope="scope">
+            <el-button @click="handleClick(scope.row)" type="text" size="small">编辑</el-button>
+          </template>
+        </el-table-column>
       </el-table>
     </div>
   </div>
@@ -41,6 +46,9 @@ export default {
           this.$message.error('获取数据失败')
         }
       })
+    },
+    handleClick(val) {
+      this.$router.push({ path: '/push', query: { id: val.id } })
     }
   }
 };
