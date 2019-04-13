@@ -85,6 +85,9 @@
         getOrderListReq(type).then(res => {
           if(res.code === 200) {
             this.list = res.data;
+            if(type === '1') {
+              this.$store.dispatch('getBadgeValue',res.data.length)
+            }
             if(this.list.length) {
               this.$refs.singleTable.setCurrentRow(this.list[0]);
             }else {

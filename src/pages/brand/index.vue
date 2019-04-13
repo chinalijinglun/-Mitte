@@ -10,8 +10,8 @@
                 <div class="picContainer">
                   <div class="picWrap">
                     <div class="pic" @click="getBrandDetail(index)" v-for="(item,index) of brandData" :key="index">
-                      <div class="image">
-                        <img :src="item.image" alt="">
+                      <div class="image" :class="{active:index === detailIndex}">
+                        <img :src="item.image" alt="" >
                       </div>
                     </div>
                   </div>
@@ -297,6 +297,7 @@
                 background-color: #fff;
                 border-radius: 7px;
                 overflow: hidden;
+                box-sizing: border-box;
                 &:hover {
                   cursor: pointer;
                 }
@@ -304,6 +305,9 @@
                   width: 100%;
                   height: 100%;
                 }
+              }
+              .active {
+                border: 2px solid red;
               }
             }
           }

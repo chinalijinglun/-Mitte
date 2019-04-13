@@ -7,7 +7,7 @@
       <div class="information">
         <p>{{item.name}}</p>
         <p class="option">
-          <span v-for="(item,index) of item.property" :key="index">{{item}}</span>
+          <span v-for="(item2,index) of item.property" :key="index">{{item2}}</span>
           <span>{{item.orders[0].order_goods.count}}双</span>
         </p>
         <p>{{item.price * item.orders[0].order_goods.count}}元</p>
