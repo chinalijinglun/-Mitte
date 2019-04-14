@@ -177,6 +177,7 @@ export default {
     }
     .searchIcon {
       justify-content: center;
+      cursor: pointer;
     }
     .noticeIcon {
       justify-content: center;
