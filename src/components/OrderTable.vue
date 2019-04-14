@@ -1,8 +1,8 @@
 <template>
   <div class="tableContainer">
-    <el-scrollbar style="height: 100%;box-sizing: border-box;padding: 10px 0;">
+    <el-scrollbar>
       <el-table
-          :data="list"
+          :data="pageList"
           ref="singleTable"
           highlight-current-row
           @current-change="handleCurrentChange"
@@ -43,6 +43,14 @@
           </el-table-column>
         </el-table>
     </el-scrollbar>
+    <el-pagination
+      background
+      layout="prev, pager, next"
+      :total="list.length"
+      :current-page.sync="currentPage"
+      @current-change="pageHandler"
+    >
+    </el-pagination>
   </div>
 </template>
 
@@ -53,12 +61,28 @@
     name: "OrderTable",
     data() {
       return {
-        list:[]
+        list:[],
+        currentPage:8,
+        pageList:[],
       }
+    },
+    computed:{
+      ...mapState(['app'])
     },
     watch: {
       $route() {
         this.getTableList();
+      },
+      'app.orderId'(val) {
+        this.pageList = this.list.filter(item => {
+          return item.id === +val
+        });
+        if(this.pageList.length) {
+          this.$refs.singleTable.setCurrentRow(this.pageList[0]);
+        }else {
+          this.$message.warning('无此订单');
+          this.$refs.singleTable.setCurrentRow(null);
+        }
       }
     },
     mounted() {
@@ -66,6 +90,16 @@
       this.getTableList();
     },
     methods: {
+      pageHandler(event) {
+        let startIndex = (event - 1) * 10;
+        let endIndex = event * 10;
+        this.pageList = this.list.slice(startIndex,endIndex);
+        if(this.pageList.length) {
+          this.$refs.singleTable.setCurrentRow(this.pageList[0]);
+        }else {
+          this.$refs.singleTable.setCurrentRow(null);
+        }
+      },
       getTableList() {
         switch (this.$route.name) {
           case '待发货' :
@@ -85,13 +119,10 @@
         getOrderListReq(type).then(res => {
           if(res.code === 200) {
             this.list = res.data;
+            this.currentPage = 1;
+            this.pageHandler(1);
             if(type === '1') {
               this.$store.dispatch('getBadgeValue',res.data.length)
-            }
-            if(this.list.length) {
-              this.$refs.singleTable.setCurrentRow(this.list[0]);
-            }else {
-              this.$refs.singleTable.setCurrentRow(null);
             }
           }
         }).catch(err => {
@@ -112,6 +143,11 @@
     overflow: hidden;
     height: calc(100% - 80px);
     background-color: #fff;
+    /deep/ .el-scrollbar {
+      height: calc(100% - 50px);
+      box-sizing: border-box;
+      padding: 10px 0;
+    }
     /deep/ .el-scrollbar__wrap {
       overflow-x: hidden;
     }
@@ -119,6 +155,9 @@
       &::before {
         background-color: transparent;
       }
+    }
+    .el-pagination {
+      text-align: center;
     }
   }
 </style>
