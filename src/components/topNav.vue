@@ -23,8 +23,8 @@
       <div class="editIcon" v-if="navList[0].name === '推送管理列表'">
         <i @click="addPush" class="el-icon-circle-plus-outline"></i>
       </div>
-      <div class="searchIcon">
-        <i class="el-icon-search"></i>
+      <div class="searchIcon" v-if="navList[0].name === '订单管理'">
+        <i class="el-icon-search" @click="getOrderId"></i>
       </div>
       <div class="noticeIcon">
         <i class="el-icon-bell"></i>
@@ -99,6 +99,20 @@ export default {
     },
     addPush() {
       this.$router.push('/push')
+    },
+    getOrderId() {
+      this.$prompt('请输入订单号',{
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+      }).then(({value}) => {
+        this.$store.dispatch('setOrderId',value)
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '取消输入',
+          center: true
+        });
+      })
     }
   }
 }

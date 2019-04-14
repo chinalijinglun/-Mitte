@@ -108,7 +108,7 @@ export default {
       })
     },
     changeInfo(val) {
-      console.log(val)
+      // console.log(val)
     }
   },
   components: {

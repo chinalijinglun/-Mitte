@@ -66,9 +66,22 @@
         pageList:[],
       }
     },
+    computed:{
+      ...mapState(['app'])
+    },
     watch: {
       $route() {
         this.getTableList();
+      },
+      'app.orderId'(val) {
+        this.pageList = this.list.filter(item => {
+          return item.id === +val
+        });
+        if(this.pageList.length) {
+          this.$refs.singleTable.setCurrentRow(this.pageList[0]);
+        }else {
+          this.$refs.singleTable.setCurrentRow(null);
+        }
       }
     },
     mounted() {
