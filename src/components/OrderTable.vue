@@ -80,6 +80,7 @@
         if(this.pageList.length) {
           this.$refs.singleTable.setCurrentRow(this.pageList[0]);
         }else {
+          this.$message.warning('无此订单');
           this.$refs.singleTable.setCurrentRow(null);
         }
       }
