@@ -29,8 +29,13 @@
       <div class="noticeIcon">
         <i class="el-icon-bell"></i>
       </div>
-      <div class="personIcon">
+      <div class="addIcon">
         <i class="el-icon-news"></i>
+        <ul class="editMenu">
+          <li>
+            <router-link to="/login">退出登录</router-link>
+          </li>
+        </ul>
       </div>
     </div>
   </div>
@@ -105,6 +110,9 @@ export default {
 </script>
 
 <style scoped lang="less">
+a {
+  text-decoration: none;
+}
 .topNav {
   width: 100%;
   height: 50px;
@@ -130,6 +138,7 @@ export default {
       flex-direction: column;
       align-items: center;
       .addMenu,
+      .personIcon,
       .editMenu {
         width: 120px;
         font-size: 13px;
@@ -157,6 +166,10 @@ export default {
         opacity: 1;
       }
       &:hover .editMenu {
+        display: block;
+        opacity: 1;
+      }
+      &:hover .outMenu {
         display: block;
         opacity: 1;
       }

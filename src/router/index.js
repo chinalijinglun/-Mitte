@@ -8,114 +8,119 @@ Vue.use(Router);
 export default new Router({
   routes: [
     {
+      path: '/login',
+      name: '登录页',
+      component: () => import('@/pages/login/login'),
+    },
+    {
       path: '/',
       component: main,
-      redirect:'/order/ship',
-      children:  [{
+      redirect: '/order/ship',
+      children: [{
         path: 'order',
         name: '订单管理',
-        redirect:'/order/ship',
+        redirect: '/order/ship',
         component: () => import('@/pages/order/index'),
         children: [
           {
-            name:'待发货',
-            path:'ship',
+            name: '待发货',
+            path: 'ship',
             component: () => import('@/components/OrderTable.vue')
           },
           {
-            name:'已发货',
-            path:'shipped',
+            name: '已发货',
+            path: 'shipped',
             component: () => import('@/components/OrderTable.vue')
           },
           {
-            name:'已完成',
-            path:'complete',
+            name: '已完成',
+            path: 'complete',
             component: () => import('@/components/OrderTable.vue')
           }
         ]
       }]
     },
     {
-      path:'/',
+      path: '/',
       component: main,
       children: [
         {
-          path:'category',
-          name:'品类管理',
+          path: 'category',
+          name: '品类管理',
           component: () => import('@/pages/category/index')
         }
       ]
     },
     {
-      path:'/',
+      path: '/',
       component: main,
       children: [
         {
-          path:'brand',
-          name:'品牌管理',
+          path: 'brand',
+          name: '品牌管理',
           component: () => import('@/pages/brand/index')
         }
       ]
     },
     {
-      path:'/',
+      path: '/',
       component: main,
       children: [
         {
-          path:'shops',
-          name:'普通商品管理',
+          path: 'shops',
+          name: '普通商品管理',
           component: () => import('@/pages/shops/index')
         },
         {
-          path:'art',
-          name:'艺术商品管理',
+          path: 'art',
+          name: '艺术商品管理',
           component: () => import('@/pages/shops/art')
         },
         {
-          path:'made',
-          name:'定制商品管理',
+          path: 'made',
+          name: '定制商品管理',
           component: () => import('@/pages/shops/made')
         },
         {
-          path:'add',
-          name:'添加商品管理',
+          path: 'add',
+          name: '添加商品管理',
           component: () => import('@/pages/shops/add')
         },
         {
-          path:'add_details',
-          name:'添加商品管理详情',
+          path: 'add_details',
+          name: '添加商品管理详情',
           component: () => import('@/pages/shops/addDetails')
         }
       ]
     },
     {
-      path:'/',
+      path: '/',
       component: main,
       children: [
         {
-          path:'push',
-          name:'推送管理',
+          path: 'push',
+          name: '推送管理',
           component: () => import('@/pages/push/index')
         },
         {
-          path:'shop_list',
-          name:'推送管理列表',
+          path: 'shop_list',
+          name: '推送管理列表',
           component: () => import('@/pages/push/push_list')
         },
         {
-          path:'topic_list',
-          name:'推送管理列表',
+          path: 'topic_list',
+          name: '推送管理列表',
           component: () => import('@/pages/push/push_list1')
         }
       ]
     },
     {
-      path:'/',
+      path: '/',
       component: main,
       children: [
         {
-          path:'sale',
-          name:'售后管理',
+          path: 'sale',
+          name: '售后管理',
           component: () => import('@/pages/sale/index')
         }
       ]
