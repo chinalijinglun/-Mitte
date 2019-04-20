@@ -6,7 +6,7 @@
       </el-breadcrumb-item>
     </el-breadcrumb>
     <div class="iconContainer">
-      <div class="deleteIcon" v-if="navList[0].name === '品类管理'">
+      <div class="deleteIcon" v-if="navList[0].name === '品类管理' && user.name === 'admin'">
         <i class="el-icon-delete"></i>
         <ul class="deleteMenu">
           <li @click="deleteCategory(1)">删除一级品类</li>
@@ -53,13 +53,17 @@
 export default {
   data() {
     return {
-      navList: null
+      navList: null,
+      user:''
     }
   },
   watch: {
     $route() {
       this.getNavList()
     }
+  },
+  mounted() {
+    this.user = JSON.parse(localStorage.getItem('user')) || {name:''}
   },
   created() {
     this.getNavList();
