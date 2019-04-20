@@ -169,7 +169,9 @@
     updateCategoryFirstReq,
     updateCategorySecondReq,
     createCategoryFirstReq,
-    createCategorySecondReq
+    createCategorySecondReq,
+    deleteCategoryFirst,
+    deleteCategorySecond
   } from '../../api/order';
 
   export default {
@@ -216,8 +218,35 @@
     },
     mounted(){
       this.getFirstCategory();
+      this.$eventHub.$on('deleteCategory',this.deleteCategoryHandler);
     },
     methods: {
+      deleteCategoryHandler(type) {
+        switch (type) {
+          case 'first' :
+            deleteCategoryFirst({id:this.selectValue}).then(res => {
+              this.$message.success('删除一级品类成功');
+              this.getFirstCategory();
+            }).catch(err => {
+              console.log(err)
+            });
+            break;
+          case 'second' :
+            if(this.secondRowData.id) {
+              deleteCategorySecond({id:this.secondRowData.id}).then(res => {
+                this.$message.success('删除二级品类成功');
+                this.getSecondCategory(this.selectValue);
+              }).catch(err => {
+                console.log(err);
+              });
+            }else {
+              this.$message.error('请先选择要删除的二级品类')
+            }
+            break;
+          default :
+            return;
+        }
+      },
       cancelModal(type) {
         this.$store.dispatch('dismissModal',type)
       },
@@ -225,6 +254,7 @@
         getCategoryFirstReq().then(res => {
           if(res.code === 200) {
             this.categoryFirstData = res.data;
+            this.currentIndex = 0;
             this.selectValue = res.data[0].id;
             this.getSecondCategory(res.data[0].id);
           }

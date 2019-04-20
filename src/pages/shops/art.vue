@@ -30,6 +30,13 @@
           <el-table-column prop="volume" label="销量" width align="center"></el-table-column>
           <el-table-column prop="create_time" label="创建时间" width="180" align="center"></el-table-column>
           <el-table-column prop="update_time" label="更新时间" width="180" align="center"></el-table-column>
+          <el-table-column v-if="user.name === 'admin'" label="删除" width="180" align="center">
+            <template slot-scope="scope">
+              <el-button @click="deleteShop(scope.row.id)">
+                删除
+              </el-button>
+            </template>
+          </el-table-column>
         </el-table>
       </el-scrollbar>
       <el-pagination
@@ -45,18 +52,20 @@
 </template>
 
 <script>
-  import { getShopListReq } from '../../api/order'
+  import { getShopListReq, deleteShopReq } from '../../api/order'
   export default {
     name: "art",
     data() {
       return {
         tableData: [],
         pageList:[],
-        currentPage:1
+        currentPage:1,
+        user:''
       };
     },
     mounted() {
       this.getShopList();
+      this.user = JSON.parse(localStorage.getItem('user')) || {name:''}
     },
     methods: {
       pageHandler(event) {
@@ -73,6 +82,14 @@
           }
         }).catch(err => {
 
+        })
+      },
+      deleteShop(id) {
+        deleteShopReq({id}).then(res => {
+          this.$message.success('删除成功');
+          this.getShopList();
+        }).catch(err => {
+          console.log(err)
         })
       }
     }
