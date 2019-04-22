@@ -17,8 +17,8 @@
       </el-button>
     </div>
     <div class="push_main tableContainer">
-      <el-scrollbar style="height: 100%">
-        <el-table :data="tableData" style="width: 100%">
+      <el-scrollbar>
+        <el-table :data="pageList" style="width: 100%">
           <el-table-column type="index" label="序列号" width="180" align="center"></el-table-column>
           <el-table-column prop="name" label="商品名称" width align="center"></el-table-column>
           <el-table-column prop="brand_name" label="品牌名称" width align="center"></el-table-column>
@@ -30,30 +30,64 @@
           <el-table-column prop="volume" label="销量" width align="center"></el-table-column>
           <el-table-column prop="create_time" label="创建时间" width="180" align="center"></el-table-column>
           <el-table-column prop="update_time" label="更新时间" width="180" align="center"></el-table-column>
+          <el-table-column v-if="user.name === 'admin'" label="删除" width="180" align="center">
+            <template slot-scope="scope">
+              <el-button @click="deleteShop(scope.row.id)">
+                删除
+              </el-button>
+            </template>
+          </el-table-column>
         </el-table>
       </el-scrollbar>
+      <el-pagination
+        background
+        layout="prev, pager, next"
+        :total="tableData.length"
+        :current-page.sync="currentPage"
+        @current-change="pageHandler"
+      >
+      </el-pagination>
     </div>
   </div>
 </template>
 
 <script>
-  import { getShopListReq } from '../../api/order'
+  import {deleteShopReq, getShopListReq} from '../../api/order'
   export default {
     name: "made",
     data() {
       return {
-        tableData: []
+        tableData: [],
+        pageList:[],
+        currentPage:1,
+        user:''
       };
     },
     mounted() {
       this.getShopList();
+      this.user = JSON.parse(localStorage.getItem('user')) || {name:''}
     },
     methods: {
+      pageHandler(event) {
+        let startIndex = (event - 1) * 10;
+        let endIndex = event * 10;
+        this.pageList = this.tableData.slice(startIndex,endIndex);
+      },
       getShopList() {
         getShopListReq('made').then(res => {
           if(res.code === 200) {
             this.tableData = res.data;
+            this.currentPage = 1;
+            this.pageHandler(1);
           }
+        }).catch(err => {
+          console.log(err)
+        })
+      },
+      deleteShop(id) {
+        deleteShopReq({id}).then(res => {
+          this.$message.success('删除成功');
+          this.getShopList();
         }).catch(err => {
           console.log(err)
         })
@@ -68,6 +102,11 @@
   overflow: hidden;
   height: calc(100vh - 200px);
   background-color: #fff;
+  /deep/ .el-scrollbar {
+    height: calc(100% - 50px);
+    box-sizing: border-box;
+    padding: 10px 0;
+  }
   /deep/ .el-scrollbar__wrap {
     overflow-x: hidden;
     overflow-y: scroll;
@@ -78,6 +117,9 @@
     &::before {
       background-color: transparent;
     }
+  }
+  .el-pagination {
+    text-align: center;
   }
 }
 .push_title {

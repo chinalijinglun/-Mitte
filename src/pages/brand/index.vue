@@ -43,9 +43,14 @@
               </el-switch>
             </div>
             <div class="brandUpdate">
-              <div @click="editBrand">
+              <div class="edit" @click="editBrand">
                 <div>· </div>
                 <div>修改</div>
+              </div>
+              <div class="apart"></div>
+              <div v-if="user.name === 'admin'" class="delete" @click="deleteBrand">
+                <div>· </div>
+                <div>删除</div>
               </div>
             </div>
           </div>
@@ -112,7 +117,7 @@
 <script>
   import { BASE_URL } from '../../utils'
   import { mapState } from 'vuex';
-  import { getBrandReq, updateBrandReq, creatBrandReq, updateBrandShowReq } from '../../api/order'
+  import { getBrandReq, updateBrandReq, creatBrandReq, deleteBrandReq} from '../../api/order'
   export default {
     name: "index",
     data() {
@@ -129,7 +134,8 @@
           weight:''
         },
         editOrCreate:null,
-        brandId:''
+        brandId:'',
+        user:''
       }
     },
     computed:{
@@ -137,6 +143,7 @@
     },
     mounted() {
       this.getBrandList();
+      this.user = JSON.parse(localStorage.getItem('user')) || {name:''}
     },
     methods: {
       cancelModal() {
@@ -241,6 +248,15 @@
         this.dialogShowButton = show;
         this.brandId = this.brandData[this.detailIndex].id;
         this.$store.dispatch('editBrand')
+      },
+      deleteBrand() {
+        deleteBrandReq({id:this.brandData[this.detailIndex].id}).then(res => {
+          this.$message.success('删除品牌成功');
+          this.detailIndex = 0;
+          this.getBrandList();
+        }).catch(err => {
+          console.log(err)
+        })
       }
     }
   }
@@ -341,7 +357,11 @@
           }
         }
         .brandUpdate {
-          &>div {
+          display: flex;
+          .apart {
+            width: 20px;
+          }
+          .edit,.delete {
             background-color: #fff;
             border: 1px solid #d8d8d8;
             border-radius: 14px;

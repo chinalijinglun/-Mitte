@@ -25,6 +25,14 @@ export function creatBrandReq(data) {
     data
   })
 }
+//删除拼配
+export function deleteBrandReq(data) {
+  return request({
+    url:'/deleteBrand',
+    method:'post',
+    data
+  })
+}
 //获取品牌列表
 export function getBrandReq() {
   return request({
@@ -152,11 +160,35 @@ export function createShopReq(data) {
     data
   })
 }
+//删除商品
+export function deleteShopReq(data) {
+  return request({
+    url:'/deleteShop',
+    method:'post',
+    data
+  })
+}
 //发货后更新shop商品销量(volume)
 export function updateVolume(data) {
   return request({
     url:'/updateVolume',
     method: 'post',
+    data
+  })
+}
+//删除一级品类
+export function deleteCategoryFirst(data) {
+  return request({
+    url:'/deleteCategoryFirst',
+    method:'post',
+    data
+  })
+}
+//删除二级品类
+export function deleteCategorySecond(data) {
+  return request({
+    url:'/deleteCategorySecond',
+    method:'post',
     data
   })
 }

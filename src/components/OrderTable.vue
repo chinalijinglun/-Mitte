@@ -27,7 +27,7 @@ export default {
   data() {
     return {
       list: [],
-      currentPage: 8,
+      currentPage: 1,
       pageList: [],
     }
   },

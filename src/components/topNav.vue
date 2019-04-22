@@ -6,6 +6,14 @@
       </el-breadcrumb-item>
     </el-breadcrumb>
     <div class="iconContainer">
+      <div class="deleteIcon" v-if="navList[0].name === '品类管理' && user.name === 'admin'">
+        <i class="el-icon-delete"></i>
+        <ul class="deleteMenu">
+          <li @click="deleteCategory(1)">删除一级品类</li>
+          <li @click="deleteCategory(2)">删除二级品类</li>
+        </ul>
+      </div>
+
       <div class="editIcon" v-if="navList[0].name === '品类管理'">
         <i @click="editHandler(navList[0].name)" class="el-icon-edit-outline"></i>
         <ul class="editMenu" v-if="navList[0].name === '品类管理'">
@@ -45,13 +53,17 @@
 export default {
   data() {
     return {
-      navList: null
+      navList: null,
+      user:''
     }
   },
   watch: {
     $route() {
       this.getNavList()
     }
+  },
+  mounted() {
+    this.user = JSON.parse(localStorage.getItem('user')) || {name:''}
   },
   created() {
     this.getNavList();
@@ -118,6 +130,18 @@ export default {
           center: true
         });
       })
+    },
+    deleteCategory(type) {
+      switch (type) {
+        case 1 :
+          this.$eventHub.$emit('deleteCategory','first');
+          break;
+        case 2 :
+          this.$eventHub.$emit('deleteCategory','second');
+          break;
+        default :
+          return;
+      }
     }
   }
 }
@@ -147,10 +171,12 @@ a {
     & > div.searchIcon {
       width: 100px;
     }
+    .deleteIcon,
     .addIcon,
     .editIcon {
       flex-direction: column;
       align-items: center;
+      .deleteMenu,
       .addMenu,
       .personIcon,
       .editMenu {
@@ -180,6 +206,10 @@ a {
         opacity: 1;
       }
       &:hover .editMenu {
+        display: block;
+        opacity: 1;
+      }
+      &:hover .deleteMenu {
         display: block;
         opacity: 1;
       }
