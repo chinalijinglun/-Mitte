@@ -7,7 +7,7 @@
             <p class="title">售后管理</p>
           </div>
           <div class="tableContainer">
-            <el-table :data="list" highlight-current-row @current-change="handleCurrentChange" style="width: 100%" :cell-style="{border:'none'}" :header-cell-style="{border:'none'}" @row-click="changeInfo">
+            <el-table :data="list" ref='singleTable' highlight-current-row @current-change="handleCurrentChange" style="width: 100%" :cell-style="{border:'none'}" :header-cell-style="{border:'none'}" @row-click="changeInfo">
               <el-table-column label="序列号" type="index" width="70" align="center">
               </el-table-column>
               <el-table-column label="订单编号" prop="pay_type" align="center">
@@ -20,7 +20,10 @@
               </el-table-column>
             </el-table>
           </div>
+          <el-pagination background layout="prev, pager, next" :page-size="10" :total="totalsize" @size-change="handleSizeChange" @current-change="handleCurrentChange1" class="fenye">
+          </el-pagination>
         </div>
+
       </el-col>
       <el-col :span="8">
         <div class="right">
@@ -43,12 +46,7 @@
             </div>
             <div class="bottom">
               <el-scrollbar style="height: 100%">
-                <ShopsInfo />
-                <ShopsInfo />
-                <ShopsInfo />
-                <ShopsInfo />
-                <ShopsInfo />
-                <ShopsInfo />
+                <ShopsInfo v-for="(item,index) in shopList" :key="index" :name="item.name" :price="item.price" status="售后中" :attribute="item.property" />
               </el-scrollbar>
             </div>
           </div>
@@ -59,12 +57,14 @@
 </template>
 
 <script>
-import { getOrderList, getUserInfo } from '@/api/push'
+import { getOrderList, getUserInfo, getOrderDetail, getOrderId } from '@/api/push'
 import ShopsInfo from './saleInfo';
 export default {
   name: "index",
   data() {
     return {
+      pages: 1,
+      totalsize: 0,
       list: [
         {
           orderNum: 123345667,
@@ -80,23 +80,32 @@ export default {
 
       },
       pay_type: '',
-      score_price: ''
+      score_price: '',
+      shopList: []
     }
   },
   created() {
-    this.getOrderList()
+    this.getOrderList(this.pages)
   },
   methods: {
-    handleCurrentChange() { },
-    getOrderList() {
-      getOrderList({
-
-      }).then(data => {
+    handleCurrentChange(val) {
+      console.log(val)
+      this.pay_type = val.pay_type;
+      this.score_price = val.score_price;
+      this.getUserInfo(val.user_id);
+      this.getOrderDetail(val.id);
+    },
+    getOrderList(id) {
+      getOrderList(id).then(data => {
         if (data.code == 200) {
-          this.list = data.data;
-          this.pay_type = data.data[0].pay_type;
-          this.score_price = data.data[0].score_price;
-          this.getUserInfo(data.data[0].user_id);
+          this.list = data.data.rows;
+          this.totalsize = data.data.count;
+          this.pay_type = data.data.rows[0].pay_type;
+          this.score_price = data.data.rows[0].score_price;
+          this.getUserInfo(data.data.rows[0].user_id);
+          this.getOrderDetail(data.data.rows[0].id);
+          // this.getOrderId(data.data[0].sales[0].id)
+          this.$refs.singleTable.setCurrentRow(this.list[0]);
         }
       })
     },
@@ -107,8 +116,31 @@ export default {
         }
       })
     },
+    getOrderDetail(id) {
+      getOrderDetail(id).then(data => {
+        if (data.code == 200 && data.data.length != 0) {
+          this.shopList = data.data;
+        } else {
+          this.shopList = []
+        }
+      })
+    },
+    // getOrderId(id) {
+    //   getOrderId(id).then(data => {
+    //     if (data.code == 200 && data.data.length != 0) {
+    //       // this.userInfo = data.data;
+    //       console.log(data.data)
+    //     }
+    //   })
+    // },
     changeInfo(val) {
       // console.log(val)
+    },
+    handleSizeChange(val) {
+      console.log(val)
+    },
+    handleCurrentChange1(val) {
+      this.getOrderList(val)
     }
   },
   components: {
@@ -118,9 +150,12 @@ export default {
 </script>
 
 <style scoped lang="less">
+.fenye {
+  text-align: center;
+}
 .tableContainer {
   border-radius: 7px;
-  overflow: hidden;
+  overflow-y: scroll;
   height: calc(100% - 80px);
   background-color: #fff;
   /deep/ .el-table {

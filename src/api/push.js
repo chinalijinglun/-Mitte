@@ -31,11 +31,21 @@ export function updatePushDetail(data) {
     })
 }
 
+// 删除push
+export function deletePushDetail(data) {
+    return request({
+        url: `/push/delete/`,
+        method: 'post',
+        data
+    })
+}
+
 // 售后列表
-export function getOrderList() {
+export function getOrderList(page) {
     return request({
         url: `/sale/list/`,
-        method: 'get'
+        method: 'get',
+        params: { page }
     })
 }
 // 售后人员
@@ -47,9 +57,18 @@ export function getUserInfo(id) {
     })
 }
 
-export function getInfo(id) {
+// 售后关联表
+export function getOrderDetail(id) {
     return request({
-        url: `/sale/user`,
+        url: `/sales`,
+        method: 'get',
+        params: { id }
+    })
+}
+
+export function getOrderId(id) {
+    return request({
+        url: `/sale/order`,
         method: 'get',
         params: { id }
     })

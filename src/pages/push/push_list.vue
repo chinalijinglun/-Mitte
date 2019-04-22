@@ -19,6 +19,7 @@
         <el-table-column fixed="right" label="操作" width="100">
           <template slot-scope="scope">
             <el-button @click="handleClick(scope.row)" type="text" size="small">编辑</el-button>
+            <el-button @click="handleDeleteClick(scope.row)" type="text" size="small">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -27,7 +28,7 @@
 </template>
 
 <script>
-import { getType } from '@/api/push'
+import { getType, deletePushDetail } from '@/api/push'
 export default {
   data() {
     return {
@@ -49,6 +50,16 @@ export default {
     },
     handleClick(val) {
       this.$router.push({ path: '/push', query: { id: val.id } })
+    },
+    handleDeleteClick(val) {
+      deletePushDetail({
+        id: val.id
+      }).then(data => {
+        if (data.code == 200) {
+          this.$message.success('删除成功');
+          this.getType()
+        }
+      })
     }
   }
 };
