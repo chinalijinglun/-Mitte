@@ -6,17 +6,17 @@
     </div>
     <div class="push_main tableContainer">
       <el-table :data="tableData" style="width: 100%">
-        <el-table-column prop="id" label="序列号" width="180" align='center'></el-table-column>
+        <el-table-column prop="id" label="序列号" width="80" align='center'></el-table-column>
         <el-table-column prop="push_name" label="推送名称" width="" align='center'>
         </el-table-column>
-        <el-table-column prop="img" label="推送图片" width="180" align='center'>
+        <el-table-column prop="img" label="推送图片" width="100" align='center'>
           <template slot-scope="scope">
-            <img :src="scope.row.img" alt="" style="width: 50px;height: 50px">
+            <img :src="scope.row.img" alt="" style="width: 50px;height: 50px;display: inline-block;">
           </template>
         </el-table-column>
         <el-table-column prop="shop_name" label="商品名称" width="" align='center'></el-table-column>
-        <el-table-column prop="updatedAt" label="推送时间" width="180" align='center'></el-table-column>
-        <el-table-column fixed="right" label="操作" width="100">
+        <el-table-column prop="updatedAt" label="推送时间" width="" align='center'></el-table-column>
+        <el-table-column fixed="right" label="操作" width="100" align='center'>
           <template slot-scope="scope">
             <el-button @click="handleClick(scope.row)" type="text" size="small">编辑</el-button>
             <el-button @click="handleDeleteClick(scope.row)" type="text" size="small">删除</el-button>

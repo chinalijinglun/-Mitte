@@ -2,7 +2,19 @@
   <div class="topNav">
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item v-for="(item,index) of navList" :key="index">
-        {{item.name}}
+        <span v-if="item.name == '推送管理列表' && item.path == '/topic_list'">
+          推送管理列表
+          <i class="el-icon-arrow-right"></i>
+          专题推送
+        </span>
+        <span v-else-if="item.name == '推送管理列表' && item.path == '/shop_list'">
+          推送管理列表
+          <i class="el-icon-arrow-right"></i>
+          商品推送
+        </span>
+        <span v-else>
+          {{item.name}}
+        </span>
       </el-breadcrumb-item>
     </el-breadcrumb>
     <div class="iconContainer">
@@ -34,14 +46,16 @@
       <div class="searchIcon" v-if="navList[0].name === '订单管理'">
         <i class="el-icon-search" @click="getOrderId"></i>
       </div>
-      <div class="noticeIcon">
-        <i class="el-icon-bell"></i>
+      <div class="noticeIcon" @click="notice">
+        <el-badge :value="100" :max="10" class="item" :hidden='not'>
+          <i class="el-icon-bell"></i>
+        </el-badge>
       </div>
       <div class="addIcon">
         <i class="el-icon-news"></i>
         <ul class="editMenu">
-          <li>
-            <router-link to="/login">退出登录</router-link>
+          <li @click="backLogin">
+            退出登录
           </li>
         </ul>
       </div>
@@ -54,7 +68,8 @@ export default {
   data() {
     return {
       navList: null,
-      user:''
+      user: '',
+      not: false
     }
   },
   watch: {
@@ -63,14 +78,22 @@ export default {
     }
   },
   mounted() {
-    this.user = JSON.parse(localStorage.getItem('user')) || {name:''}
+    this.user = JSON.parse(localStorage.getItem('user')) || { name: '' }
   },
   created() {
     this.getNavList();
   },
   methods: {
+    backLogin() {
+      location.replace('/');
+      localStorage.removeItem('user');
+    },
+    notice() {
+      this.not = true
+    },
     getNavList() {
       this.navList = this.$route.matched.filter(item => item.name);
+      console.log(this.navList)
     },
     addCategory(num) {
       switch (num) {
@@ -118,11 +141,11 @@ export default {
       this.$router.push('/push')
     },
     getOrderId() {
-      this.$prompt('请输入订单号',{
+      this.$prompt('请输入订单号', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-      }).then(({value}) => {
-        this.$store.dispatch('setOrderId',value)
+      }).then(({ value }) => {
+        this.$store.dispatch('setOrderId', value)
       }).catch(() => {
         this.$message({
           type: 'info',
@@ -133,13 +156,13 @@ export default {
     },
     deleteCategory(type) {
       switch (type) {
-        case 1 :
-          this.$eventHub.$emit('deleteCategory','first');
+        case 1:
+          this.$eventHub.$emit('deleteCategory', 'first');
           break;
-        case 2 :
-          this.$eventHub.$emit('deleteCategory','second');
+        case 2:
+          this.$eventHub.$emit('deleteCategory', 'second');
           break;
-        default :
+        default:
           return;
       }
     }
@@ -150,6 +173,12 @@ export default {
 <style scoped lang="less">
 a {
   text-decoration: none;
+}
+.item {
+  margin-top: -4px;
+}
+.el-icon-arrow-right {
+  color: #c0c4cc;
 }
 .topNav {
   width: 100%;

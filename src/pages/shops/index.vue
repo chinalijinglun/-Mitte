@@ -24,28 +24,22 @@
           <el-table-column prop="brand_name" label="品牌名称" width align="center"></el-table-column>
           <el-table-column prop="img" label="商品图片" width="180" align="center">
             <template slot-scope="scope">
-              <img :src="scope.row.img" alt style="width: 50px;height: 50px">
+              <img :src="scope.row.img" alt style="width: 50px;height: 50px;display: inline-block;">
             </template>
           </el-table-column>
           <el-table-column prop="volume" label="销量" width align="center"></el-table-column>
           <el-table-column prop="create_time" label="创建时间" width="180" align="center"></el-table-column>
           <el-table-column prop="update_time" label="更新时间" width="180" align="center"></el-table-column>
-          <el-table-column v-if="user.name === 'admin'" label="删除" width="180" align="center">
+          <el-table-column v-if="user.name === 'admin'" fixed="right" label="操作" width="180" align="center">
             <template slot-scope="scope">
-              <el-button @click="deleteShop(scope.row.id)">
+              <el-button @click="deleteShop(scope.row.id)" type="text" size="small">
                 删除
               </el-button>
             </template>
           </el-table-column>
         </el-table>
       </el-scrollbar>
-      <el-pagination
-        background
-        layout="prev, pager, next"
-        :total="tableData.length"
-        :current-page.sync="currentPage"
-        @current-change="pageHandler"
-      >
+      <el-pagination background layout="prev, pager, next" :total="tableData.length" :current-page.sync="currentPage" @current-change="pageHandler">
       </el-pagination>
     </div>
   </div>
@@ -58,21 +52,21 @@ export default {
   data() {
     return {
       tableData: [],
-      pageList:[],
-      currentPage:1,
-      user:''
+      pageList: [],
+      currentPage: 1,
+      user: ''
     };
   },
   mounted() {
     this.getShopList();
     // localStorage.setItem('user',JSON.stringify({name:'admin'}))
-    this.user = JSON.parse(localStorage.getItem('user')) || {name:''}
+    this.user = JSON.parse(localStorage.getItem('user')) || { name: '' }
   },
   methods: {
     pageHandler(event) {
       let startIndex = (event - 1) * 10;
       let endIndex = event * 10;
-      this.pageList = this.tableData.slice(startIndex,endIndex);
+      this.pageList = this.tableData.slice(startIndex, endIndex);
     },
     getShopList() {
       getShopListReq('normal').then(res => {
@@ -86,7 +80,7 @@ export default {
       })
     },
     deleteShop(id) {
-      deleteShopReq({id}).then(res => {
+      deleteShopReq({ id }).then(res => {
         this.$message.success('删除成功');
         this.getShopList();
       }).catch(err => {

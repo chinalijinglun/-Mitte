@@ -7,23 +7,25 @@
             <p class="title">售后管理</p>
           </div>
           <div class="tableContainer">
-            <el-table :data="list" ref='singleTable' highlight-current-row @current-change="handleCurrentChange" style="width: 100%" :cell-style="{border:'none'}" :header-cell-style="{border:'none'}" @row-click="changeInfo">
-              <el-table-column label="序列号" type="index" width="70" align="center">
-              </el-table-column>
-              <el-table-column label="订单编号" prop="pay_type" align="center">
-              </el-table-column>
-              <el-table-column label="实付总价(元)" prop="total_price" align="center">
-              </el-table-column>
-              <el-table-column label="下单时间" prop="createdAt" align="center">
-              </el-table-column>
-              <el-table-column label="申请时间" prop="updatedAt" align="center">
-              </el-table-column>
-            </el-table>
-          </div>
-          <el-pagination background layout="prev, pager, next" :page-size="10" :total="totalsize" @size-change="handleSizeChange" @current-change="handleCurrentChange1" class="fenye">
-          </el-pagination>
-        </div>
+            <el-scrollbar>
+              <el-table :data="list" ref='singleTable' highlight-current-row @current-change="handleCurrentChange" style="width: 100%" :cell-style="{border:'none'}" :header-cell-style="{border:'none'}" @row-click="changeInfo">
+                <el-table-column label="序列号" type="index" width="70" align="center">
+                </el-table-column>
+                <el-table-column label="订单编号" prop="pay_type" align="center">
+                </el-table-column>
+                <el-table-column label="实付总价(元)" prop="total_price" align="center">
+                </el-table-column>
+                <el-table-column label="下单时间" prop="createdAt" align="center">
+                </el-table-column>
+                <el-table-column label="申请时间" prop="updatedAt" align="center">
+                </el-table-column>
+              </el-table>
+            </el-scrollbar>
 
+            <el-pagination background layout="prev, pager, next" :page-size="10" :total="totalsize" @size-change="handleSizeChange" @current-change="handleCurrentChange1" class="fenye">
+            </el-pagination>
+          </div>
+        </div>
       </el-col>
       <el-col :span="8">
         <div class="right">
@@ -152,6 +154,12 @@ export default {
 <style scoped lang="less">
 .fenye {
   text-align: center;
+}
+.tableContainer .el-scrollbar {
+  height: calc(100% - 50px);
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 10px 0;
 }
 .tableContainer {
   border-radius: 7px;

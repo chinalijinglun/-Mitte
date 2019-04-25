@@ -15,7 +15,7 @@ export default new Router({
     {
       path: '/',
       component: main,
-      redirect: '/order/ship',
+      redirect: '/login',
       children: [{
         path: 'order',
         name: '订单管理',

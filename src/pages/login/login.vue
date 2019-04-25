@@ -3,17 +3,41 @@
     <div class="login_main">
       <div class="login_top">觅他电商系统登录</div>
       <div class="login_bottom">
-        <input type="text" class="login_input">
-        <input type="password" class="login_input">
-        <a class="login_btn" href="javascript:;">登录</a>
+        <input type="text" class="login_input" v-model="name" placeholder="用户名">
+        <input type="password" class="login_input" v-model="password" placeholder="密码">
+        <!--  to="/order/ship" -->
+        <a class="login_btn" @click="login">
+          登录
+        </a>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { getLogin } from '../../api/push'
 export default {
-
+  data() {
+    return {
+      name: 'admin',
+      password: '123456'
+    }
+  },
+  methods: {
+    login() {
+      getLogin(this.name, this.password).then(data => {
+        if (data.code == 200) {
+          this.$message.success('登录成功');
+          this.$router.push('/order/ship');
+          if (data.data.name === 'admin') {
+            localStorage.setItem('user', '{"name":"admin"}')
+          }
+        } else {
+          this.$message.error('登录失败')
+        }
+      })
+    }
+  }
 }
 </script>
 

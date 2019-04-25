@@ -16,12 +16,7 @@
             </el-form-item>
             <el-form-item label="商品类型">
               <el-select v-model="form.shopType" placeholder="请选择">
-                <el-option
-                  v-for="(item,index) of typeList"
-                  :key="index"
-                  :label="item.label"
-                  :value="item.value"
-                ></el-option>
+                <el-option v-for="(item,index) of typeList" :key="index" :label="item.label" :value="item.value"></el-option>
               </el-select>
             </el-form-item>
           </el-form>
@@ -52,14 +47,7 @@
       <el-col :span="11">
         <h2 class="active_title">商品图片</h2>
         <div class="img_upload tableContainer grid-content">
-          <el-upload
-            class="avatar-uploader"
-            v-loading="isLoading"
-            :action="`${BASE_URL}/upload`"
-            :show-file-list="false"
-            :on-success="handleAvatarSuccess"
-            :before-upload="beforeAvatarUpload"
-          >
+          <el-upload class="avatar-uploader" v-loading="isLoading" :action="`${BASE_URL}/upload`" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
             <img v-if="form.imageUrl" :src="form.imageUrl" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
@@ -70,24 +58,26 @@
       <el-col :span="11">
         <div class="tableContainer btn">
           <el-button type="primary" @click="onSubmit">提交</el-button>
-          <el-button>取消</el-button>
-         </div>
+          <el-button>
+            <router-link to="/shops">取消</router-link>
+          </el-button>
+        </div>
       </el-col>
     </el-row>
   </div>
 </template>
 
 <script>
-  import { BASE_URL } from '../../utils/index'
-  import { createShopReq } from '../../api/order';
+import { BASE_URL } from '../../utils/index'
+import { createShopReq } from '../../api/order';
 export default {
   data() {
     return {
-      BASE_URL:BASE_URL,
-      typeList:[
-        {label: '普通商品', value: 'normal'},
-        {label: '艺术商品', value: 'art'},
-        {label: '定制商品', value: 'made'}
+      BASE_URL: BASE_URL,
+      typeList: [
+        { label: '普通商品', value: 'normal' },
+        { label: '艺术商品', value: 'art' },
+        { label: '定制商品', value: 'made' }
       ],
       isLoading: false,
       form: {
@@ -95,18 +85,18 @@ export default {
         price: "",
         offerPrice: "",
         shopType: "",
-        property:[],
-        count:'',
+        property: [],
+        count: '',
         imageUrl: ''
       },
     };
   },
   methods: {
-    handleAvatarSuccess(res,file) {
-      if(res.code === 200) {
+    handleAvatarSuccess(res, file) {
+      if (res.code === 200) {
         this.form.imageUrl = res.data.url;
         this.isLoading = false;
-        console.log(res,file,'上传成功');
+        console.log(res, file, '上传成功');
       }
     },
     beforeAvatarUpload(file) {
@@ -122,14 +112,14 @@ export default {
       this.isLoading = true;
     },
 
-    onSubmit(e){
+    onSubmit(e) {
       let { form } = this;
       let { selectedOptions, brandValue } = this.$route.query;
       form.categoryFirstName = selectedOptions[0];
       form.categorySecondName = selectedOptions[1];
       form.brandName = brandValue;
       createShopReq(form).then(res => {
-        if(res.code === 200) {
+        if (res.code === 200) {
           this.$message.success('添加商品成功');
           form.name = '';
           form.price = '';
@@ -148,9 +138,9 @@ export default {
 </script>
 
 <style scoped lang="less">
-.btn{
+.btn {
   text-align: right;
-  height: 50px!important;
+  height: 50px !important;
   padding-right: 30px;
 }
 .avatar-uploader {

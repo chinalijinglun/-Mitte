@@ -73,3 +73,20 @@ export function getOrderId(id) {
         params: { id }
     })
 }
+// ddenglu登录
+export function getLogin(n, p) {
+    return request({
+        url: `/login`,
+        method: 'get',
+        params: { name: n, password: p }
+    })
+}
+
+// 创建ddenglu登录
+export function postLogin(n, p) {
+    return request({
+        url: `/register`,
+        method: 'post',
+        params: { name: n, password: p }
+    })
+}

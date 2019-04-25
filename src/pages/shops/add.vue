@@ -2,35 +2,23 @@
   <div class="push">
     <div class="title">选择添加商品品类</div>
     <div class="push_main tableContainer">
-      <el-form
-        ref="form"
-        :model="form"
-        label-width="180px"
-        class="push_form"
-      >
+      <el-form ref="form" :model="form" label-width="180px" class="push_form">
         <el-form-item label="选择品类">
-          <el-cascader
-            :options="categoryOptions"
-            v-model="selectedOptions"
-            @change="handleChange"
-          >
+          <el-cascader :options="categoryOptions" v-model="selectedOptions" @change="handleChange">
           </el-cascader>
         </el-form-item>
         <el-form-item label="选择品牌">
           <el-select v-model="brandValue" placeholder="请选择">
-            <el-option
-              v-for="(item,index) in brandNameOptions"
-              :key="index"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
+            <el-option v-for="(item,index) in brandNameOptions" :key="index" :label="item.label" :value="item.value"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item class="btn">
           <el-button type="primary" @click="onSubmit">
-              添加商品
+            添加商品
           </el-button>
-          <el-button>取消</el-button>
+          <el-button>
+            <router-link to="/shops">取消</router-link>
+          </el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -38,12 +26,12 @@
 </template>
 
 <script>
-  import { getCategoryNamesReq, getBrandNamesReq } from '../../api/order'
+import { getCategoryNamesReq, getBrandNamesReq } from '../../api/order'
 export default {
   name: "index",
   data() {
     return {
-      form:{},
+      form: {},
       selectedOptions: [],
       brandValue: "",
       brandNameOptions: [],
@@ -56,13 +44,13 @@ export default {
   },
   methods: {
     onSubmit(e) {
-      if(this.brandValue && this.categoryOptions.length) {
+      if (this.brandValue && this.categoryOptions.length) {
         let { selectedOptions, brandValue } = this;
         this.$router.push({
-          path:'/add_details',
-          query:{ brandValue, selectedOptions }
+          path: '/add_details',
+          query: { brandValue, selectedOptions }
         })
-      }else {
+      } else {
         this.$message.warning('品类和品牌必须选择')
       }
     },
@@ -71,7 +59,7 @@ export default {
     },
     getCategoryNames() {
       getCategoryNamesReq().then(res => {
-        if(res.code === 200) {
+        if (res.code === 200) {
           this.categoryOptions = res.data;
         }
       }).catch(err => {
@@ -80,7 +68,7 @@ export default {
     },
     getBrandNames() {
       getBrandNamesReq().then(res => {
-        if(res.code === 200) {
+        if (res.code === 200) {
           this.brandNameOptions = res.data;
         }
       }).catch(err => {
@@ -92,8 +80,11 @@ export default {
 </script>
 
 <style scoped lang="less">
-.btn{
-    margin-top: 150px
+a {
+  text-decoration: none;
+}
+.btn {
+  margin-top: 150px;
 }
 .push_form {
   max-width: 750px;
